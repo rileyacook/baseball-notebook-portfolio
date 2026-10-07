@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Baseball notebook</title>
+<link rel="icon" href="/ball.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/app.css">
+<script src="/view_model.js" defer></script><script src="/app.js" defer></script>
+</head>
+<body>
+<div class="workspace">
+  <aside class="sidebar" id="sidebar" aria-label="Saved conversations">
+    <a class="wordmark" href="/" aria-label="Baseball notebook home"><img src="/ball.svg" alt="" width="36" height="36"><span>Baseball<br><em>notebook</em></span></a>
+    <button class="new-chat" id="new-chat"><span aria-hidden="true">＋</span> New conversation</button>
+    <div class="history-heading">Your conversations <span id="chat-count">0</span></div>
+    <nav id="history" aria-label="Conversation history"></nav>
+    <div class="sidebar-foot"><span class="status-dot"></span><div>Private temporary chats<br><span>Cleared after 24 hours of inactivity<br>or when the free preview restarts</span><p class="source-note">The information used here was obtained free of charge from and is copyrighted by <a href="https://www.retrosheet.org/" target="_blank" rel="noopener noreferrer">Retrosheet</a>.</p></div></div>
+  </aside>
+  <button class="sidebar-shade" id="sidebar-shade" aria-label="Close conversation list" hidden></button>
+  <main>
+    <header class="topbar">
+      <button class="icon-button mobile-menu" id="menu-button" aria-label="Open conversations">☰</button>
+      <div class="breadcrumbs"><img class="tiny-ball" src="/ball.svg" alt=""><span id="chat-title">New conversation</span></div>
+      <div class="top-actions"><span class="coverage">Regular season · 1898–2025</span><label class="theme-control"><span aria-hidden="true">◐</span><select id="theme" aria-label="Appearance"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></label></div>
+    </header>
+    <section class="conversation-scroll" id="conversation-scroll" aria-label="Baseball conversation">
+      <div class="conversation" id="conversation">
+        <section class="welcome" id="welcome">
+          <div class="eyebrow">BASEBALL RECORDS</div>
+          <h1>The baseball desk.</h1>
+          <p class="welcome-description">Look up a favorite player, revisit a season, or check a team’s record.</p>
+          <h2 class="starter-heading">A few questions to get started</h2>
+          <div class="starter-grid" id="starters">
+            <button class="starter" data-question="What was Dustin Pedroia's AVG in 2008?"><span class="starter-tag">Player season</span><span class="starter-copy"><strong>What was Dustin Pedroia’s batting average in 2008?</strong></span><span class="starter-arrow" aria-hidden="true">→</span></button>
+            <button class="starter" data-question="Top 5 hitters by OPS in 2024 with at least 502 PA"><span class="starter-tag">Leaderboard</span><span class="starter-copy"><strong>Who led in OPS in 2024?</strong><span class="starter-note">Top 5 hitters · at least 502 plate appearances</span></span><span class="starter-arrow" aria-hidden="true">→</span></button>
+            <button class="starter" data-question="What year were the most home runs hit by MLB as a whole?"><span class="starter-tag">League history</span><span class="starter-copy"><strong>Which MLB season had the most home runs?</strong></span><span class="starter-arrow" aria-hidden="true">→</span></button>
+            <button class="starter" data-question="How many games did the Braves hit exactly 1 home run in 2023?"><span class="starter-tag">Game counts</span><span class="starter-copy"><strong>How many Braves games had exactly one home run in 2023?</strong></span><span class="starter-arrow" aria-hidden="true">→</span></button>
+          </div>
+          <p class="welcome-note">Ask follow-up questions without starting over. This free AI preview has limited shared capacity; if it is busy, try again shortly.</p>
+        </section>
+        <div id="turns" aria-live="polite"></div>
+      </div>
+    </section>
+    <div class="composer-dock">
+      <div class="composer-meta"><span id="context-hint">Ask in your own words.</span><span class="enter-hint">↵ send · shift ↵ new line</span></div>
+      <form id="composer-form" class="composer">
+        <label for="question" class="visually-hidden">Your baseball question</label>
+        <textarea id="question" name="question" rows="1" maxlength="2000" placeholder="Ask a baseball question…" autocomplete="off"></textarea>
+        <button id="send" class="send-button" type="submit" aria-label="Send question"><span aria-hidden="true">↑</span></button>
+      </form>
+      <div class="composer-foot"><span>Regular-season records · 1898–2025</span><span>Temporary visitor conversation</span></div>
+    </div>
+  </main>
+</div>
+<dialog id="clarification-dialog" class="clarification-dialog" aria-labelledby="clarification-title">
+  <div class="dialog-top"><span class="eyebrow">ONE MORE DETAIL</span><button id="close-dialog" class="icon-button" aria-label="Close clarification">×</button></div>
+  <h2 id="clarification-title">One more detail</h2>
+  <p class="provenance">Your question: <span id="clarification-question"></span></p>
+  <p id="clarification-message"></p>
+  <div id="dialog-options" class="choice-list"></div>
+  <form id="clarification-form"><label for="clarification-input" id="clarification-label">Your answer to the question above</label><input id="clarification-input" maxlength="2000" placeholder="Enter the requested detail…"><p id="clarification-example" class="provenance" hidden></p><button class="primary-button" type="submit">Continue question <span aria-hidden="true">→</span></button></form>
+  <p class="dialog-note">Your original question stays with this conversation.</p>
+</dialog>
+<div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>
