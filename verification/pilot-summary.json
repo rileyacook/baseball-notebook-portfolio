@@ -15,8 +15,8 @@
   "cloud_initial_checks": 8,
   "cloud_authenticated_checks": 13,
   "synthetic_cloud_accounts_disabled": true,
-  "real_tester_invitations_created": false,
-  "updated_at": "2026-10-12T18:41:44.922498+00:00",
+  "real_tester_invitations_created": null,
+  "updated_at": "2026-10-12T20:35:28.351355+00:00",
   "scope": "Selected non-secret summary of the complete private application pilot; this repository is not a standalone app and does not reproduce its full fingerprint.",
   "hosting_plan": "Free",
   "configured_memory_mb": 512,
@@ -25,8 +25,10 @@
   "notes": [
     "Invite-only friends/family pilot deployed and verified; owner controls individual link distribution. No anonymous analytics demo or LinkedIn post.",
     "Actual cloud checks covered separate-account chat isolation, roles, same-origin protection, quotas, durable activity after restart, immediate revocation, file protection and mobile layouts.",
-    "Synthetic verification accounts are disabled and are not real adoption. No real tester invitations have been created.",
+    "Synthetic verification accounts are disabled and are not real adoption. No real tester invitations have been created by the agent.",
     "Provider/model/snapshot-specific cases and representative checks do not establish universal correctness, uptime or scale.",
-    "Private deployment identifiers, URLs, credentials, database image, account details and conversations are excluded."
-  ]
+    "Private deployment identifiers, URLs, credentials, database image, account details and conversations are excluded.",
+    "Owner-operated confirmed password setup and ordinary sign-in were verified; the owner reported regular/Incognito access, with the regular external Owner invitation view visually verified. No credential/account details are exported."
+  ],
+  "owner_external_signin_confirmed": true
 }
