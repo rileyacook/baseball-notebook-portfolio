@@ -80,11 +80,17 @@ def parse_metric_conditions(question: str) -> tuple[MetricCondition, ...]:
             rf"\b({alias})\b\s*(?:of\s*)?({symbols}|{operators})\s*({number})",
             rf"\b({operators})\s*(?:an?\s+)?({number})\s*\b({alias})\b",
             rf"\b({alias})\b\s+({operators})\s*({number})",
+            rf"\b({number})\s+or\s+(more|fewer|less)\s+\b({alias})\b",
+            rf"\b({number})\s+\b({alias})\b\s+or\s+(more|fewer|less)\b",
         )
         for index, pattern in enumerate(patterns):
             for match in re.finditer(pattern, question, flags=re.IGNORECASE):
                 groups = match.groups()
-                if index == 1:
+                if index in {3, 4}:
+                    value_text = groups[0]
+                    comparison = groups[1] if index == 3 else groups[2]
+                    operator_text = ">=" if comparison.casefold() == "more" else "<="
+                elif index == 1:
                     operator_text, value_text = groups[0], groups[1]
                 else:
                     operator_text, value_text = groups[1], groups[2]

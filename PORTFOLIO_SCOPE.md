@@ -1,7 +1,7 @@
 # Portfolio provenance
 
-Selected source is copied unchanged from the application fingerprint `5f113f042cd2b66ac0c7f1efa16340ad966af2f3b4229ca1f5e15583110fd509`, verified on October 7, 2026. The selected files alone do not reproduce the full fingerprint because this repository intentionally omits the database and private service/deployment components.
+Selected current source is copied unchanged from the complete private application's fingerprint `c66415410d0ad1e7c00208ba1da86bfc52a919046678191222af7572831d3494`, genuinely verified on October 12, 2026. The selected files alone do not reproduce that fingerprint because this showcase intentionally omits the database and private service/deployment components.
 
-The full 95-case verification and model-assisted follow-up records were uploaded to the private application repository through commit `5b42dba`. This portfolio has a fresh independent history and contains no private repository history.
+Current records include95 actual cases, exact-ID/source/database finalization and real Judge/Braves follow-ups. The earlier October 7 records remain under `verification/releases/2026-10-07/` as historical evidence. The selected pilot summary describes genuine cloud/owner checks without private deployment identifiers or account configuration.
 
-The screenshot shows a local demo visitor conversation, not an original owner conversation. This portfolio is prepared for public code review. Application launch and the pending isolated wording fix remain separate decisions.
+The demonstration screenshot is a local demo conversation, not an original owner conversation. This repository has independent public history; no private repository history, credentials, database or personal conversations are included. Invite-only pilot operation is separate from public portfolio review and future social sharing.

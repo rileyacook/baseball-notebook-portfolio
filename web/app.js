@@ -31,7 +31,10 @@
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
     });
     const data = await response.json();
-    if (!response.ok) throw new Error(data.error || 'The website could not complete this request.');
+    if (!response.ok) {
+      if (response.status === 401 && window.BaseballAccess) window.BaseballAccess.showSignIn(data.error || 'Please sign in again.');
+      throw new Error(data.error || 'The website could not complete this request.');
+    }
     return data;
   }
   function closeSidebar() {
@@ -291,6 +294,7 @@
   $('theme').addEventListener('change', () => { setTheme($('theme').value); safeStorage.set('baseball-theme', $('theme').value); });
   (async () => {
     try {
+      if (window.BaseballAccess && !await window.BaseballAccess.ready) return;
       await refreshHistory();
       const active = safeStorage.get('baseball-active-chat');
       if (active && state.chats.some(chat => chat.id === active)) await openChat(active);

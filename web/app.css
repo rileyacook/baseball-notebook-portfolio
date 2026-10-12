@@ -46,6 +46,23 @@ button:focus-visible, a:focus-visible, select:focus-visible, summary:focus-visib
   outline: 2px solid var(--accent); outline-offset: 4px;
 }
 [hidden] { display: none !important; }
+.access-screen { min-height: 100dvh; display: grid; place-items: center; padding: 24px; }
+.access-card { max-width: 520px; width: 100%; padding: 30px; border: 1px solid var(--line); border-radius: 16px; }
+.access-card .wordmark { margin-bottom: 32px; }
+.access-card h1, .owner-page h1 { font-size: clamp(28px, 5vw, 40px); }
+.access-card form, #invite-form { display: grid; gap: 12px; margin: 24px 0; }
+.access-card input, .owner-page input { width: 100%; padding: 12px; font: inherit; color: inherit; background: transparent; border: 1px solid currentColor; border-radius: 8px; }
+.owner-page { max-width: 1240px; margin: auto; padding: 32px 24px; }
+.owner-page section { margin-top: 36px; }
+.owner-page .activity-table { overflow-x: auto; }
+.owner-page table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.owner-page th, .owner-page td { padding: 12px; text-align: left; vertical-align: top; border-bottom: 1px solid currentColor; }
+.owner-page #invite-form, .owner-page #invite-result { max-width: 520px; }
+.owner-page #recent-activity { padding-left: 20px; line-height: 1.8; }
+.owner-page #refresh-activity { align-self: flex-start; }
+.owner-page tbody tr:first-child td { color: var(--body); font-weight: 400; }
+.owner-page td button { display: block; margin-top: 6px; color: var(--accent); }
+.owner-page h1 { font-family: Georgia, serif; font-weight: 400; color: var(--ink); }
 .workspace { height: 100dvh; min-height: 400px; display: grid; grid-template-columns: 248px minmax(0, 1fr); }
 .sidebar { display: flex; flex-direction: column; min-height: 0; background: var(--rail); border-right: 1px solid var(--line); border-top: 3px solid var(--accent); padding: 29px 20px 22px; }
 .wordmark { display: flex; gap: 11px; align-items: center; width: fit-content; color: var(--ink); font: 25px/1.05 Georgia, serif; letter-spacing: -.7px; }

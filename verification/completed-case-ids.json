@@ -1,7 +1,8 @@
 {
   "model": "qwen/qwen3.8-27b",
-  "fingerprint": "5f113f042cd2b66ac0c7f1efa16340ad966af2f3b4229ca1f5e15583110fd509",
-  "passed": [
+  "fingerprint": "c66415410d0ad1e7c00208ba1da86bfc52a919046678191222af7572831d3494",
+  "database_sha256": "8fdba1b5b20635eace63449f1d2bafa358f5ceb4b9c1ab819ce6516657ca7b96",
+  "completed_case_ids": [
     "ai_question_baseline:Q001",
     "ai_question_baseline:Q002",
     "ai_question_baseline:Q003",
@@ -97,5 +98,11 @@
     "game_lookup_checkpoint:G002",
     "game_lookup_checkpoint:G003",
     "game_lookup_checkpoint:G004"
-  ]
+  ],
+  "counts": {
+    "ai_question_baseline": 75,
+    "contextual_paraphrase_checkpoint": 16,
+    "game_lookup_checkpoint": 4
+  },
+  "recorded_at": "2026-10-12T13:06:59.891458+00:00"
 }

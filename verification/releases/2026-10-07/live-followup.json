@@ -1,0 +1,16 @@
+{
+  "model": "qwen/qwen3.8-27b",
+  "fingerprint": "5f113f042cd2b66ac0c7f1efa16340ad966af2f3b4229ca1f5e15583110fd509",
+  "verified_at": "2026-10-07T22:46:00.474921+00:00",
+  "initial_question": "How many home runs did Aaron Judge hit in 2024?",
+  "initial_home_runs": 58,
+  "follow_up": "Change the season to 2023.",
+  "follow_up_season": 2023,
+  "follow_up_home_runs": 37,
+  "continuation_route": "bounded_model_edit",
+  "actual_model_calls": [
+    "edit",
+    "translation"
+  ],
+  "database_sha256": "8fdba1b5b20635eace63449f1d2bafa358f5ceb4b9c1ab819ce6516657ca7b96"
+}

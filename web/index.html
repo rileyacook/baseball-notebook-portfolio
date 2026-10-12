@@ -6,10 +6,28 @@
 <title>Baseball notebook</title>
 <link rel="icon" href="/ball.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/app.css">
-<script src="/view_model.js" defer></script><script src="/app.js" defer></script>
+<script src="/view_model.js" defer></script><script src="/access.js" defer></script><script src="/app.js" defer></script>
 </head>
 <body>
-<div class="workspace">
+<section class="access-screen" id="access-screen" aria-labelledby="access-title">
+  <div class="access-card">
+    <a class="wordmark" href="/"><img src="/ball.svg" alt="" width="36" height="36"><span>Baseball<br><em>notebook</em></span></a>
+    <p class="eyebrow">FRIENDS &amp; FAMILY PREVIEW</p>
+    <h1 id="access-title">Sign in to the baseball desk.</h1>
+    <p id="access-description">This preview is for invited testers. Use the email on your invitation.</p>
+    <form id="access-form">
+      <label id="access-email-label" for="access-email">Email</label>
+      <input id="access-email" type="email" autocomplete="username" maxlength="254" required>
+      <label id="access-password-label" for="access-password">Password</label>
+      <input id="access-password" type="password" autocomplete="current-password" maxlength="256" required>
+      <button class="primary-button" id="access-submit" type="submit">Sign in</button>
+    </form>
+    <p id="access-message" role="status" aria-live="polite"></p>
+    <p class="provenance">Need an invitation or a new password link? Ask Riley.</p>
+    <p class="provenance">Riley can see activity counts and outcomes during testing. Conversations are temporary.</p>
+  </div>
+</section>
+<div class="workspace" id="workspace" hidden>
   <aside class="sidebar" id="sidebar" aria-label="Saved conversations">
     <a class="wordmark" href="/" aria-label="Baseball notebook home"><img src="/ball.svg" alt="" width="36" height="36"><span>Baseball<br><em>notebook</em></span></a>
     <button class="new-chat" id="new-chat"><span aria-hidden="true">＋</span> New conversation</button>
@@ -22,7 +40,7 @@
     <header class="topbar">
       <button class="icon-button mobile-menu" id="menu-button" aria-label="Open conversations">☰</button>
       <div class="breadcrumbs"><img class="tiny-ball" src="/ball.svg" alt=""><span id="chat-title">New conversation</span></div>
-      <div class="top-actions"><span class="coverage">Regular season · 1898–2025</span><label class="theme-control"><span aria-hidden="true">◐</span><select id="theme" aria-label="Appearance"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></label></div>
+      <div class="top-actions"><a id="owner-link" class="text-button" href="/owner" hidden>Activity</a><button id="sign-out" class="text-button" hidden>Sign out</button><span class="coverage">Regular season · 1898–2025</span><label class="theme-control"><span aria-hidden="true">◐</span><select id="theme" aria-label="Appearance"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></label></div>
     </header>
     <section class="conversation-scroll" id="conversation-scroll" aria-label="Baseball conversation">
       <div class="conversation" id="conversation">

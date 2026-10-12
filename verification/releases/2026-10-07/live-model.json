@@ -1,0 +1,9 @@
+{
+  "model": "qwen/qwen3.8-27b",
+  "fingerprint": "5f113f042cd2b66ac0c7f1efa16340ad966af2f3b4229ca1f5e15583110fd509",
+  "baseline_passed": 75,
+  "held_out_passed": 16,
+  "game_lookup_passed": 4,
+  "database_sha256": "8fdba1b5b20635eace63449f1d2bafa358f5ceb4b9c1ab819ce6516657ca7b96",
+  "verified_at": "2026-10-07T22:02:08.384637+00:00"
+}

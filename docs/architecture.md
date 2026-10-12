@@ -29,5 +29,11 @@ The project uses Python, DuckDB, pandas, parameterized SQL, vanilla JavaScript/C
 
 - An approved catalog limits breadth but makes interpretation and execution reviewable. Unsupported questions are explicit.
 - A copied database snapshot keeps the owner's workspace independent, but data updates require a new release and fingerprint checks.
-- Ephemeral visitor storage makes a free preview simpler, but durable accounts/history would require a separate design decision.
+- Temporary conversations make a free pilot simpler. The full private app now uses durable invited accounts/session and outcome metadata, while transcripts remain temporary; durable transcripts would require a separate decision.
 - Free provider capacity keeps operating cost bounded, but requests can pause at quota limits. No paid fallback is enabled.
+
+## Current season-follow-up fix and hosted pilot
+
++An exact season-only command could leave redundant unconsumed command text after applying the year edit. Completeness validation then rejected the follow-up. The ten-line guard in `conversation.py` omits that fragment only when the whole exact command is fully represented. Other filters and fragments retain completeness validation. Eleven focused checks, 78 preview checks and a fresh 95-case hosted run passed; real post-finalization and deployed Braves edits preserved Atlanta and inclusive >=3home_runs.
+
++The private hosted app authenticates invited members, checks active roles and chat ownership, admits bounded question usage, then invokes this interpretation/validation/SQL path. Supabase holds mutable identity/session/usage and outcome metadata; DuckDB holds the separate read-only analytical snapshot. Full question text is not stored in owner activity. The current public summary contains verification outcomes, not private authentication or deployment configuration.

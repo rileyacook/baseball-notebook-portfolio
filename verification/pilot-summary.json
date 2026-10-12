@@ -1,0 +1,32 @@
+{
+  "fingerprint": "c66415410d0ad1e7c00208ba1da86bfc52a919046678191222af7572831d3494",
+  "model": "qwen/qwen3.8-27b",
+  "current_source_cases_passed": 95,
+  "counts": {
+    "baseline": 75,
+    "held_out": 16,
+    "game_lookup": 4
+  },
+  "actual_case_ids_finalized": true,
+  "live_judge_followup_passed": true,
+  "live_threshold_followup_passed": true,
+  "cloud_deployment_verified": true,
+  "owner_account_setup_complete": true,
+  "cloud_initial_checks": 8,
+  "cloud_authenticated_checks": 13,
+  "synthetic_cloud_accounts_disabled": true,
+  "real_tester_invitations_created": false,
+  "updated_at": "2026-10-12T18:41:44.922498+00:00",
+  "scope": "Selected non-secret summary of the complete private application pilot; this repository is not a standalone app and does not reproduce its full fingerprint.",
+  "hosting_plan": "Free",
+  "configured_memory_mb": 512,
+  "cpu_memory_peak_usage_measured": false,
+  "observed_single_idle_wake_seconds": 22.256,
+  "notes": [
+    "Invite-only friends/family pilot deployed and verified; owner controls individual link distribution. No anonymous analytics demo or LinkedIn post.",
+    "Actual cloud checks covered separate-account chat isolation, roles, same-origin protection, quotas, durable activity after restart, immediate revocation, file protection and mobile layouts.",
+    "Synthetic verification accounts are disabled and are not real adoption. No real tester invitations have been created.",
+    "Provider/model/snapshot-specific cases and representative checks do not establish universal correctness, uptime or scale.",
+    "Private deployment identifiers, URLs, credentials, database image, account details and conversations are excluded."
+  ]
+}
