@@ -1,9 +1,15 @@
 {
   "model": "qwen/qwen3.8-27b",
-  "fingerprint": "c66415410d0ad1e7c00208ba1da86bfc52a919046678191222af7572831d3494",
+  "fingerprint": "8f60e345b2c4b271bf57ee3d6918896b7ec433aa7820f9d816af7196dd221541",
+  "case_profile_sha256": "fe551dd79d43d68e01277fecae8a38a2e6b5e7cd41f78e9b14e69c2c4536ecea",
+  "database_sha256": "8fdba1b5b20635eace63449f1d2bafa358f5ceb4b9c1ab819ce6516657ca7b96",
   "baseline_passed": 75,
   "held_out_passed": 16,
   "game_lookup_passed": 4,
-  "database_sha256": "8fdba1b5b20635eace63449f1d2bafa358f5ceb4b9c1ab819ce6516657ca7b96",
-  "verified_at": "2026-10-12T13:06:40.186720+00:00"
+  "feedback_passed": 29,
+  "provider_requests": 73,
+  "verified_at": "2026-10-28T12:35:25.271426+00:00",
+  "provenance_note": "73 cumulative case HTTP attempts comprise66 expressly retained identical-source attempts and7 new attempts; retained attempt history includes original timeout. Not124newmodelcalls.",
+  "retained_case_records": 70,
+  "new_case_records": 54
 }

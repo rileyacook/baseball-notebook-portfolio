@@ -30,10 +30,13 @@
     const response = await fetch(path, body === undefined ? {} : {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
     });
-    const data = await response.json();
+    let data;
+    try { data=await response.json(); } catch { throw new Error('The website did not return a usable response. Please retry later.'); }
     if (!response.ok) {
       if (response.status === 401 && window.BaseballAccess) window.BaseballAccess.showSignIn(data.error || 'Please sign in again.');
-      throw new Error(data.error || 'The website could not complete this request.');
+      const error=new Error(data.error || 'The website could not complete this request.');
+      Object.assign(error,data,{request_id:response.headers.get('X-Request-ID')});
+      throw error;
     }
     return data;
   }
@@ -108,7 +111,7 @@
       const wrap = el('div', 'table-wrap');
       wrap.tabIndex = 0;
       wrap.setAttribute('aria-label', 'Baseball statistics; scroll for all rows and columns');
-      const table = el('table');
+      const table = el('table',presentation.ranked ? 'ranked' : '');
       const thead = el('thead'); const heading = el('tr');
       columns.forEach(column => { const th = el('th', '', column.label); th.scope = 'col'; th.dataset.field = column.key; heading.append(th); });
       thead.append(heading); table.append(thead);
@@ -139,7 +142,7 @@
   }
   function renderDetails(result, turn) {
     const details = el('details', 'details');
-    details.append(el('summary', '', 'Explain / explore details'));
+    details.append(el('summary', '', 'How this answer was calculated'));
     const body = el('div', 'details-body');
     if (result.conversation?.resolved_question !== turn.question) {
       body.append(el('h4', '', 'Question answered'), el('p', '', result.conversation.resolved_question));
@@ -177,6 +180,12 @@
     if (outcome === 'result' || outcome === 'no_results') {
       answer.append(el('p', 'answer-text', result.plain_english_answer || 'No matching regular-season data was found.'));
       const presentation = result.presentation || {};
+      if (presentation.context?.length) {
+        const scope=el('dl','answer-scope');
+        presentation.context.forEach(item=>{ const pair=el('div');pair.append(el('dt','',item.label),el('dd','',item.value));scope.append(pair); });
+        answer.append(scope);
+      }
+      (presentation.warnings || []).forEach(message=>answer.append(el('p','coverage-warning',message)));
       answer.append(renderStats(presentation));
       if (vm.hasComparison(presentation.chart)) {
         const chart = renderChart(presentation.chart);
@@ -203,10 +212,12 @@
         answer.append(button('Choose or add a detail ↗', 'text-button', () => openClarification(turn)));
       } else answer.append(el('p', 'provenance', 'Clarification recorded in this conversation.'));
     } else if (outcome === 'unsupported') {
-      answer.append(el('div', 'state-label', 'Outside the current records interface'), el('p', 'answer-text notice', result.unsupported_reason || 'This question is not supported yet. No substitute query was run.'));
+      answer.append(el('div', 'state-label', result.presentation?.title || 'Not supported in this version'), el('p', 'answer-text notice', result.unsupported_reason || 'This question is not supported yet. No substitute query was run.'));
     } else {
-      answer.append(el('div', 'state-label', result.error_code === 'ollama_unavailable' ? 'AI service unavailable' : 'Could not retrieve the answer'), el('p', 'answer-text notice error-text', result.error_message || 'Something went wrong. Please retry.'));
-      if (result.retryable) answer.append(button('Retry question ↻', 'text-button', () => sendQuestion(turn.question, turn.selection)));
+      const notice=vm.operationalNotice(result);
+      answer.append(el('div','state-label',notice.title),el('p','answer-text notice error-text',notice.message));
+      if (notice.retryable) answer.append(retryButton(turn.question,turn.selection,notice));
+      if (notice.requestId) answer.append(el('small','provenance',`Support reference: ${notice.requestId}`));
     }
     article.append(answer);
     return article;
@@ -248,12 +259,32 @@
     $('clarification-input').value = '';
     $('clarification-dialog').showModal();
   }
+  function retryButton(question,selection,notice) {
+    const retry=button('Retry question ↻','text-button',()=>sendQuestion(question,selection));
+    if (notice.retryAfter !== null && notice.retryAfter > 0) {
+      retry.disabled=true;
+      const readyAt=new Date(Date.now()+notice.retryAfter*1000);
+      retry.textContent=`Retry after ${readyAt.toLocaleTimeString([], {hour:'numeric',minute:'2-digit',second:'2-digit'})}`;
+      const wait=Math.min(notice.retryAfter*1000,2147483647);
+      setTimeout(()=>{ if (Date.now()>=readyAt.getTime()) {retry.disabled=false;retry.textContent='Retry question ↻';} },wait);
+    }
+    return retry;
+  }
+  function showRequestProblem(error,question,selection) {
+    const notice=vm.operationalNotice(error);
+    let panel=$('request-problem');
+    if (!panel) {panel=el('section','request-problem');panel.id='request-problem';panel.setAttribute('role','status');$('composer-form').before(panel);}
+    panel.replaceChildren(el('strong','',notice.title),el('p','',notice.message+' Your question remains in the text box.'));
+    if (notice.retryable) panel.append(retryButton(question,selection,notice));
+    if (notice.requestId) panel.append(el('small','',`Support reference: ${notice.requestId}`));
+  }
   async function sendQuestion(question, selection) {
     if (state.busy) return;
     question = question?.trim();
     if (!question) return;
     const draft = $('question').value;
     busy(true);
+    $('request-problem')?.remove();
     if ($('clarification-dialog').open) $('clarification-dialog').close();
     try {
       if (!state.chat) state.chat = await api('/api/chats', {});
@@ -273,7 +304,7 @@
     } catch (error) {
       $('loading')?.remove(); $('pending-user')?.remove();
       $('question').value = draft || question; resizeComposer();
-      toast(error.message + ' Your question remains in the text box.');
+      showRequestProblem(error,question,selection);
       if (state.chat) { try { state.chat = await api(`/api/chats/${state.chat.id}`); renderChat(); } catch { /* Preserve the local draft if the server stopped. */ } }
     } finally { busy(false); }
   }

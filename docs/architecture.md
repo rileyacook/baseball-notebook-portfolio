@@ -1,39 +1,33 @@
-# Architecture and engineering decisions
+# Architecture and engineering tradeoffs
+
+The application authenticates an invited person before interpreting a historical baseball question. It resolves complete supported wording directly when possible; otherwise the fixed hosted model proposes a structured request or bounded edit. Shared intent/completeness contracts require the supported metric, conditions, population, dates and relationships to survive that interpretation. The query registry validates a cataloged query and parameters, then fixed SQL computes results from an independent read-only DuckDB snapshot.
 
 ```mermaid
-flowchart LR
-    A[Browser question] --> B[Resolve question and context]
-    B --> C[Deterministic interpretation or constrained model request]
-    C --> D{Validate complete request}
-    D -->|Missing information| E[Specific clarification]
-    D -->|Unsupported scope| F[Explain limitation]
-    D -->|Approved query and parameters| G[Saved parameterized SQL]
-    G --> H[Read-only DuckDB]
-    H --> I[Answer contract with values and coverage]
-    I --> A
+flowchart TD
+  Browser --> Access[Membership, session, role and chat ownership]
+  Access --> Budget[Admission quota and analytic slot]
+  Budget --> Intent[Conversation and intent resolution]
+  Intent --> Direct[Deterministic supported wording]
+  Intent --> Model[Constrained interpretation or bounded edit]
+  Direct --> Validate[Completeness, schema and catalog validation]
+  Model --> Validate
+  Validate --> SQL[Fixed parameterized SQL]
+  Validate --> Clarify[Clarification or unsupported response]
+  SQL --> DuckDB[Read-only historical snapshot]
+  DuckDB --> Contract[Required rows, requested statistics and coverage]
+  Contract --> Browser
 ```
 
-The catalog is an allowlist of analytical capabilities. Model output identifies a saved query and supplies bounded fields; validation remains responsible for query compatibility, entity/time constraints and accepted conditions. It does not execute model-generated SQL. A concrete query must answer the complete question, including its filters.
+The model interprets language; it does not calculate the baseball totals or execute free-form SQL. This finite catalog improves auditability and scope checks at the cost of open-ended analytical flexibility. Recorded-data coverage is kept distinct from zero, a subtotal and a complete historical total.
 
-Follow-ups resolve against the prior validated request. Model-assisted edits are constrained and revalidated. A fresh complete named-team question can start independently; ambiguous pronouns keep context. Missing information prompts a targeted clarification rather than an assumed default.
+Conversation edits preserve prior scope unless explicitly changed. Fresh Judge and Braves year edits demonstrate this boundary. The failed grouped home/road comparison led to a general required-row repair rather than hardcoded answers. Requested-stat projection retains identity and completeness fields needed to interpret the result.
 
-First/final regular-season games use date, game number and game ID to select one actual record. This matters for doubleheaders: the final Braves game in 2024 is game two of the September 30 doubleheader. Missing scores stay missing. Extra venue/opponent/stat filters are rejected if the saved query cannot honor them.
+Supabase supplies mutable identity/session/usage metadata; DuckDB supplies a reproducible analytical snapshot. Temporary SQLite chats have separate ownership and expiry. The owner activity view provides counts/outcomes, not transcripts. Server-only privileged credentials require backend role/ownership enforcement; browser keys and RLS alone do not replace those checks. Operational support references correlate allowlisted status/error/timing events without logging private questions, answers or provider bodies.
 
-The model gateway keeps provider credentials server-side and returns schema-constrained output. It has no database/file tools. The database connection is read-only with external access disabled. The application calculates values from the database and exposes coverage rather than treating absent records as zero.
+The hosted gateway uses fixed free `qwen/qwen3.8-27b`; the original local Ollama setup is separate. Typed errors distinguish request/user/model budgets, provider quota, busy capacity, timeouts and configuration faults. Actual retry headers govern provider deadlines. There is no automatic paid fallback or model switch.
 
-Verification combines local regression/boundary tests with actual hosted model calls. Approval is tied to source, model and database fingerprints. Progress is saved after each genuine pass; provider quota stops further requests until the requested retry time. Historical passes for a different fingerprint remain separate.
+Verification binds the complete private application to its exact case profile, model and database manifest. Current evidence has124 matching IDs with explicit70-retained/54-new provenance and both fresh real follow-ups. Failed runs are preserved. Cloud access, model, quota, responsive-browser, idle-recovery and durable metadata checks extend that evidence without establishing universal accuracy, always-on availability or production scale.
 
-The project uses Python, DuckDB, pandas, parameterized SQL, vanilla JavaScript/CSS and schema-constrained model APIs. The original local configuration uses Ollama; the separately verified hosted candidate uses Groq. They are different models, with separate validation evidence.
+Packaging still needs separate checks. The first new image built but failed the normal startup import path. A container-path correction preserved the approved application fingerprint and strict gate, then actual deployment/startup were confirmed. A source hash is not a hash of every container binary or mutable base-image tag.
 
-## Tradeoffs
-
-- An approved catalog limits breadth but makes interpretation and execution reviewable. Unsupported questions are explicit.
-- A copied database snapshot keeps the owner's workspace independent, but data updates require a new release and fingerprint checks.
-- Temporary conversations make a free pilot simpler. The full private app now uses durable invited accounts/session and outcome metadata, while transcripts remain temporary; durable transcripts would require a separate decision.
-- Free provider capacity keeps operating cost bounded, but requests can pause at quota limits. No paid fallback is enabled.
-
-## Current season-follow-up fix and hosted pilot
-
-+An exact season-only command could leave redundant unconsumed command text after applying the year edit. Completeness validation then rejected the follow-up. The ten-line guard in `conversation.py` omits that fragment only when the whole exact command is fully represented. Other filters and fragments retain completeness validation. Eleven focused checks, 78 preview checks and a fresh 95-case hosted run passed; real post-finalization and deployed Braves edits preserved Atlanta and inclusive >=3home_runs.
-
-+The private hosted app authenticates invited members, checks active roles and chat ownership, admits bounded question usage, then invokes this interpretation/validation/SQL path. Supabase holds mutable identity/session/usage and outcome metadata; DuckDB holds the separate read-only analytical snapshot. Full question text is not stored in owner activity. The current public summary contains verification outcomes, not private authentication or deployment configuration.
+Current operation is an invite-only Free pilot. Chats can disappear on sleep/restart; managed identity/outcome metadata persists. Provider limits are shared. Owner acceptance and an actual31-table auth/public local logical restore passed October29, preserving exact comparisons and appRLS/anonymous denial. The encrypted copy checksum was verified and nativeOS reports cloud data present. No independent remote download/hash test or complete managedSupabase/GoTrue platform restore was performed. The stale-chat Retry recovery limitation remains documented. The public subset deliberately omits the complete server, data and private deployment configuration.

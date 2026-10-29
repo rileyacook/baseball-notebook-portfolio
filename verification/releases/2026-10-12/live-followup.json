@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "model": "qwen/qwen3.8-27b",
+  "fingerprint": "c66415410d0ad1e7c00208ba1da86bfc52a919046678191222af7572831d3494",
+  "verified_at": "2026-10-12T13:07:13.214761+00:00",
+  "initial_question": "How many home runs did Aaron Judge hit in 2024?",
+  "initial_home_runs": 58,
+  "initial_actual_model_calls": [],
+  "follow_up": "Change the season to 2023.",
+  "follow_up_season": 2023,
+  "follow_up_home_runs": 37,
+  "continuation_route": "bounded_model_edit",
+  "actual_model_calls": [
+    "edit"
+  ],
+  "actual_model_call_stages": [
+    {
+      "stage": "hosted season edit",
+      "kind": "edit"
+    }
+  ],
+  "initial_request": {
+    "query_id": "player_season_batting_summary",
+    "limit": 1,
+    "season": 2024,
+    "team_id": null,
+    "month": null,
+    "day": null,
+    "start_season": null,
+    "end_season": null,
+    "player_id": "judga001",
+    "venue": null,
+    "opponent_team_id": null,
+    "metric": null,
+    "secondary_metric": null,
+    "direction": null,
+    "min_pa": null,
+    "min_ip_outs": null,
+    "min_starts": null,
+    "top_n": null,
+    "conditions": []
+  },
+  "follow_up_request": {
+    "query_id": "player_season_batting_summary",
+    "limit": 1,
+    "season": 2023,
+    "team_id": null,
+    "month": null,
+    "day": null,
+    "start_season": null,
+    "end_season": null,
+    "player_id": "judga001",
+    "venue": null,
+    "opponent_team_id": null,
+    "metric": null,
+    "secondary_metric": null,
+    "direction": null,
+    "min_pa": null,
+    "min_ip_outs": null,
+    "min_starts": null,
+    "top_n": null,
+    "conditions": []
+  },
+  "database_sha256": "8fdba1b5b20635eace63449f1d2bafa358f5ceb4b9c1ab819ce6516657ca7b96",
+  "notes": "Actual current-source production requests and hosted edit; no historical passes inherited. Not cloud deployment proof."
+}

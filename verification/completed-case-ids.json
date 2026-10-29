@@ -1,8 +1,8 @@
 {
-  "model": "qwen/qwen3.8-27b",
-  "fingerprint": "c66415410d0ad1e7c00208ba1da86bfc52a919046678191222af7572831d3494",
-  "database_sha256": "8fdba1b5b20635eace63449f1d2bafa358f5ceb4b9c1ab819ce6516657ca7b96",
-  "completed_case_ids": [
+  "application_fingerprint": "8f60e345b2c4b271bf57ee3d6918896b7ec433aa7820f9d816af7196dd221541",
+  "case_profile_sha256": "fe551dd79d43d68e01277fecae8a38a2e6b5e7cd41f78e9b14e69c2c4536ecea",
+  "status": "all_124_exact_IDs_matched",
+  "ids": [
     "ai_question_baseline:Q001",
     "ai_question_baseline:Q002",
     "ai_question_baseline:Q003",
@@ -97,12 +97,38 @@
     "game_lookup_checkpoint:G001",
     "game_lookup_checkpoint:G002",
     "game_lookup_checkpoint:G003",
-    "game_lookup_checkpoint:G004"
+    "game_lookup_checkpoint:G004",
+    "pilot_feedback:F001",
+    "pilot_feedback:F002",
+    "pilot_feedback:F003A",
+    "pilot_feedback:F003B",
+    "pilot_feedback:F004",
+    "pilot_feedback:F005",
+    "pilot_feedback:F006",
+    "pilot_feedback:F007",
+    "pilot_feedback:F008",
+    "pilot_feedback:F009",
+    "pilot_feedback:F010",
+    "pilot_feedback:F011",
+    "pilot_feedback:F012",
+    "pilot_feedback:F013",
+    "pilot_feedback:F014",
+    "pilot_feedback:F015",
+    "pilot_feedback:F016",
+    "pilot_feedback:F017",
+    "pilot_feedback:F018",
+    "pilot_feedback:F019",
+    "pilot_feedback:F020",
+    "pilot_feedback:F021",
+    "pilot_feedback:F022",
+    "pilot_feedback:F023",
+    "pilot_feedback:F024",
+    "pilot_feedback:F025",
+    "pilot_feedback:F026",
+    "pilot_feedback:F027",
+    "pilot_feedback:F028"
   ],
-  "counts": {
-    "ai_question_baseline": 75,
-    "contextual_paraphrase_checkpoint": 16,
-    "game_lookup_checkpoint": 4
-  },
-  "recorded_at": "2026-10-12T13:06:59.891458+00:00"
+  "explicitly_approved_retained_identical_source_records": 70,
+  "newly_completed_case_records": 54,
+  "contains_question_or_feedback_text": false
 }

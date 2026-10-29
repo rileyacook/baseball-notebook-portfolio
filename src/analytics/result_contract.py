@@ -98,6 +98,7 @@ def answer_translation(
     result: dict[str, Any] = {
         "question": question,
         "status": translation.status,
+        "reason_code": translation.reason_code,
         "plain_english_answer": None,
         "display": None,
         "clarification_message": translation.message if translation.status == "needs_clarification" else None,
@@ -118,7 +119,7 @@ def answer_translation(
         "aggregation_grain": None,
         "tie_policy": None,
         "qualification": None,
-        "coverage": {"database_seasons": [1898, 2025]},
+        "coverage": {"database_seasons": [catalog["request_schema"]["season_minimum"], catalog["request_schema"]["season_maximum"]]},
         "data_source": "Retrosheet-derived local DuckDB; regular season",
         "result_columns": [],
         "result_rows": [],
@@ -166,7 +167,7 @@ def answer_translation(
             "tie_policy": _first_value(frame, "tie_policy")
                 or semantics.get("tie_policy"),
             "coverage": {
-                "database_seasons": [1898, 2025],
+                "database_seasons": [catalog["request_schema"]["season_minimum"], catalog["request_schema"]["season_maximum"]],
                 **_coverage_values(frame),
             },
             "result_columns": list(frame.columns),

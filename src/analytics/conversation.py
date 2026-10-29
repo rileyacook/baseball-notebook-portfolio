@@ -9,6 +9,7 @@ from typing import Any
 import httpx
 
 from .model_gateway import post_model
+from .service_faults import ModelServiceError
 from .clarification_guidance import clarification_detail
 
 from .conditions import METRIC_ALIASES, parse_metric_conditions
@@ -152,8 +153,10 @@ def _model_edits(previous: str, fragment: str) -> dict[str, Any]:
         response.raise_for_status()
         content = response.json()['message']['content']
         data = json.loads(content)
+    except ModelServiceError:
+        raise
     except httpx.HTTPError as error:
-        raise OllamaConnectionError('The AI service is busy or unavailable. Please try again in about a minute.') from error
+        raise OllamaConnectionError('The AI service could not be reached. Your question is saved; please retry later.') from error
     except (KeyError, TypeError, json.JSONDecodeError) as error:
         raise TranslationError('The follow-up could not be interpreted safely. Please spell out the complete question.') from error
     return data
@@ -240,7 +243,8 @@ def _apply_edits(previous: str, fragment: str, proposal: dict, allowed: set[str]
 def resolve(question: str, context: Context | None, selection: dict | None = None) -> Resolution:
     if not isinstance(question, str) or not question.strip() or len(question) > 2000:
         raise ValueError('Enter a question between 1 and 2,000 characters.')
-    question = question.strip()
+    from .question_intent import normalize_wording
+    question = normalize_wording(question.strip())
     catalog = load_catalog()
     if has_unsafe_instruction(question) or find_deferred_metric(question, catalog) or unsupported_frontier_reason(question):
         return Resolution(question, 'policy_refusal')
@@ -274,13 +278,31 @@ def resolve(question: str, context: Context | None, selection: dict | None = Non
         return Resolution(context.question, 'clarification', message='Choose a player or team using the buttons, or provide a name and context.')
     # Explicit complete questions start fresh even when an earlier clarification is pending.
     players, teams = find_player_mentions(question), find_team_mentions(question)
+    # A self-contained new statistical question can reuse a unique explicit
+    # prior player without retaining the old operation's sentence grammar.
+    # Scope remains checked by the inheritance boundary below.
+    if (not players and re.search(r'\b(?:his|her|their|that player)\b', question, re.I)
+            and 'metric' in facets(question)):
+        old = context.result.get('validated_request') or context.result.get('conversation', {}).get('parent_request') or {}
+        identity = old.get('player_id')
+        if identity and catalog['queries'][old['query_id']].get('semantics',{}).get('context_kind') == 'identity':
+            from .entity_resolution import player_display_name
+            named = re.sub(r'\b(?:his|her|their|that player)\b', player_display_name(identity)+"'s", question, flags=re.I)
+            if not explicit_years(question) and not re.search(r'\bcareer\b',question,re.I):
+                if old.get('season') is not None:
+                    named = named.rstrip(' ?. ')+f" in {old['season']}?"
+                elif old.get('start_season') is not None and old.get('end_season') is not None:
+                    named = named.rstrip(' ?. ')+f" from {old['start_season']} through {old['end_season']}?"
+            if old.get('team_id') and not teams:
+                named = named.rstrip(' ?. ')+f" with {old['team_id']}?"
+            return Resolution(named, 'inherited_identity', facets(question) | {'metric','domain'})
     contextual = bool(
         re.search(r'^(?:and\b|what about\b|how about\b|instead\b|make that\b|same\b)|\bthose\b', question, re.I)
         or (not players and re.search(r'\b(?:his|her|that player)\b', question, re.I))
         or (not (players or teams) and re.search(r'\btheir\b', question, re.I))
         or (not teams and re.search(r'\bthat team\b', question, re.I))
     )
-    if not contextual and re.search(r'^(?:what|who|which|how|show|rank|compare|tell|top|bottom|list)\b', question, re.I) and (
+    if not contextual and re.search(r'^(?:what|who|which|how|show|rank|compare|tell|top|bottom|list|break\s*down)\b', question, re.I) and (
         players or teams or 'metric' in facets(question) or re.search(r'\b(?:mlb|all players|all hitters|pitchers|hitters)\b', question, re.I)
     ):
         return Resolution(question)
@@ -367,7 +389,8 @@ def _inheritance_guard(context: Context, resolution: Resolution, translation: An
         allowed_group = {'stat_domain': 'domain', 'average_method': 'population', 'ranking_population': 'population', 'aggregation_grain': 'time'}[meaning]
         broad_time_change = (meaning == 'stat_domain' and resolution.route == 'time_replacement'
                              and not (facets(context.question) & {'domain', 'metric'}))
-        if not broad_time_change and allowed_group not in resolution.allowed and old_semantics.get(meaning) != new_semantics.get(meaning):
+        identity_transition = (resolution.route == 'inherited_identity' and old_semantics.get('context_kind') == 'identity')
+        if not identity_transition and not broad_time_change and allowed_group not in resolution.allowed and old_semantics.get(meaning) != new_semantics.get(meaning):
             return 'The follow-up would change the statistical meaning. Please ask the complete question.'
     return None
 
@@ -402,20 +425,21 @@ def respond(question: str, context: Context | None = None, selection: dict | Non
                 resolution.question = context.question
             result = clarification(failure) if failure else answer_translation(resolution.question, translation, catalog)
         result = present_result(result)
+    except ModelServiceError as error:
+        result = present_result(error.result())
     except OllamaConnectionError:
-        result = {'status': 'error', 'error_code': 'ollama_unavailable', 'error_message': 'The AI service is busy or unavailable. Please try again in about a minute.', 'retryable': True}
+        result = {'status': 'error', 'error_code': 'ollama_unavailable', 'error_message': 'The AI service could not be reached. Your question is saved; please retry later.', 'retryable': True}
     except TranslationError:
         result = present_result(clarification('I could not safely interpret that follow-up. Please name what should change or ask the complete question.'))
     except ValueError as error:
         result = {'status': 'error', 'error_code': 'invalid_question', 'error_message': str(error), 'retryable': False}
     except Exception:
-        import logging
-        logging.getLogger(__name__).exception('Conversation request failed')
+        # The HTTP boundary records an allowlisted diagnostic code, never a traceback or question.
         result = {'status': 'error', 'error_code': 'unexpected_error', 'error_message': 'Something went wrong while retrieving the answer. Your question is saved; please retry.', 'retryable': True}
     result['conversation'] = {'resolved_question': resolution.question, 'route': resolution.route}
     if result.get('status') == 'needs_clarification':
         result['clarification_detail'] = clarification_detail(result)
-    if result.get('status') == 'needs_clarification' and context and resolution.route not in {'standalone', 'policy_refusal'}:
+    if result.get('status') in {'needs_clarification','unsupported','error'} and context and resolution.route not in {'standalone', 'policy_refusal'}:
         parent = context.result.get('validated_request') or context.result.get('conversation', {}).get('parent_request')
         if parent:
             result['conversation']['parent_request'] = parent

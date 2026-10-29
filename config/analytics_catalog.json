@@ -90,82 +90,493 @@
     ]
   },
   "queries": {
-    "team_season_first_game": {"description": "Find one documented team's first recorded regular-season game in one exact season, with opponent, date, venue, score and game evidence.", "path": "sql/queries/team_season_first_game.sql", "output_metrics": ["runs_for", "runs_against"], "request_fields": ["team_id", "season", "limit"], "required_request_fields": ["team_id", "season"], "sql_parameters": ["team_id", "season"], "semantics": {"operation": "team_season_game", "entity_type": "team_game", "time_scope": "exact_season", "aggregation_grain": "one_regular_season_team_game", "supports_team_filter": true, "game_selection": "first", "ordering": "game_date_then_game_number_then_game_id", "scope": "regular_season_only"}},
-    "team_season_final_game": {"description": "Find one documented team's final recorded regular-season game in one exact season, with opponent, date, venue, score and game evidence.", "path": "sql/queries/team_season_final_game.sql", "output_metrics": ["runs_for", "runs_against"], "request_fields": ["team_id", "season", "limit"], "required_request_fields": ["team_id", "season"], "sql_parameters": ["team_id", "season"], "semantics": {"operation": "team_season_game", "entity_type": "team_game", "time_scope": "exact_season", "aggregation_grain": "one_regular_season_team_game", "supports_team_filter": true, "game_selection": "final", "ordering": "game_date_then_game_number_then_game_id", "scope": "regular_season_only"}},
+    "team_season_first_game": {
+      "description": "Find one documented team's first recorded regular-season game in one exact season, with opponent, date, venue, score and game evidence.",
+      "path": "sql/queries/team_season_first_game.sql",
+      "output_metrics": [
+        "runs_for",
+        "runs_against"
+      ],
+      "request_fields": [
+        "team_id",
+        "season",
+        "limit"
+      ],
+      "required_request_fields": [
+        "team_id",
+        "season"
+      ],
+      "sql_parameters": [
+        "team_id",
+        "season"
+      ],
+      "semantics": {
+        "operation": "team_season_game",
+        "entity_type": "team_game",
+        "time_scope": "exact_season",
+        "aggregation_grain": "one_regular_season_team_game",
+        "supports_team_filter": true,
+        "game_selection": "first",
+        "ordering": "game_date_then_game_number_then_game_id",
+        "scope": "regular_season_only"
+      }
+    },
+    "team_season_final_game": {
+      "description": "Find one documented team's final recorded regular-season game in one exact season, with opponent, date, venue, score and game evidence.",
+      "path": "sql/queries/team_season_final_game.sql",
+      "output_metrics": [
+        "runs_for",
+        "runs_against"
+      ],
+      "request_fields": [
+        "team_id",
+        "season",
+        "limit"
+      ],
+      "required_request_fields": [
+        "team_id",
+        "season"
+      ],
+      "sql_parameters": [
+        "team_id",
+        "season"
+      ],
+      "semantics": {
+        "operation": "team_season_game",
+        "entity_type": "team_game",
+        "time_scope": "exact_season",
+        "aggregation_grain": "one_regular_season_team_game",
+        "supports_team_filter": true,
+        "game_selection": "final",
+        "ordering": "game_date_then_game_number_then_game_id",
+        "scope": "regular_season_only"
+      }
+    },
     "mlb_season_batting_totals_leaders": {
       "description": "Rank MLB-wide regular-season batting counting-stat totals by season, retaining all ties at the requested rank boundary.",
       "path": "sql/queries/mlb_season_batting_totals_leaders.sql",
-      "output_metrics": ["plate_appearances", "at_bats", "runs", "hits", "doubles", "triples", "home_runs", "runs_batted_in", "walks", "strikeouts", "stolen_bases", "metric_component_coverage_percent"],
-      "allowed_metrics": ["plate_appearances", "at_bats", "runs", "hits", "doubles", "triples", "home_runs", "runs_batted_in", "walks", "strikeouts", "stolen_bases"],
-      "request_fields": ["start_season", "end_season", "metric", "direction", "top_n", "limit"],
-      "required_request_fields": ["start_season", "end_season", "metric", "direction", "top_n"],
-      "sql_parameters": ["start_season", "end_season", "metric", "direction", "top_n"],
-      "semantics": {"operation": "leaderboard", "stat_domain": "batting", "entity_type": "mlb_season", "time_scope": "inclusive_season_range", "aggregation_grain": "all_regular_season_team_game_rows_per_season", "ranking_metric_field": "metric", "sort_direction_field": "direction", "ranking_population": "mlb_wide", "tie_policy": "competition_rank_inclusive"}
+      "output_metrics": [
+        "plate_appearances",
+        "at_bats",
+        "runs",
+        "hits",
+        "doubles",
+        "triples",
+        "home_runs",
+        "runs_batted_in",
+        "walks",
+        "strikeouts",
+        "stolen_bases",
+        "metric_component_coverage_percent"
+      ],
+      "allowed_metrics": [
+        "plate_appearances",
+        "at_bats",
+        "runs",
+        "hits",
+        "doubles",
+        "triples",
+        "home_runs",
+        "runs_batted_in",
+        "walks",
+        "strikeouts",
+        "stolen_bases"
+      ],
+      "request_fields": [
+        "start_season",
+        "end_season",
+        "metric",
+        "direction",
+        "top_n",
+        "limit"
+      ],
+      "required_request_fields": [
+        "start_season",
+        "end_season",
+        "metric",
+        "direction",
+        "top_n"
+      ],
+      "sql_parameters": [
+        "start_season",
+        "end_season",
+        "metric",
+        "direction",
+        "top_n"
+      ],
+      "semantics": {
+        "operation": "leaderboard",
+        "stat_domain": "batting",
+        "entity_type": "mlb_season",
+        "time_scope": "inclusive_season_range",
+        "aggregation_grain": "all_regular_season_team_game_rows_per_season",
+        "ranking_metric_field": "metric",
+        "sort_direction_field": "direction",
+        "ranking_population": "mlb_wide",
+        "tie_policy": "competition_rank_inclusive"
+      }
     },
     "mlb_team_season_batting_metric_leaders": {
       "description": "Rank MLB database team IDs by complete pooled batting production in one exact regular season, retaining boundary ties.",
       "path": "sql/queries/mlb_team_season_batting_metric_leaders.sql",
-      "output_metrics": ["games", "plate_appearances", "at_bats", "runs", "hits", "doubles", "triples", "home_runs", "runs_batted_in", "walks", "strikeouts", "stolen_bases", "avg", "obp", "slg", "ops", "metric_component_coverage_percent"],
-      "allowed_metrics": ["plate_appearances", "at_bats", "runs", "hits", "doubles", "triples", "home_runs", "runs_batted_in", "walks", "strikeouts", "stolen_bases", "avg", "obp", "slg", "ops"],
-      "request_fields": ["season", "metric", "direction", "top_n", "limit"],
-      "required_request_fields": ["season", "metric", "direction", "top_n"],
-      "sql_parameters": ["season", "metric", "direction", "top_n"],
-      "semantics": {"operation": "leaderboard", "stat_domain": "team_batting", "entity_type": "team_season", "time_scope": "exact_season", "aggregation_grain": "one_pooled_regular_season_row_per_database_team_id", "ranking_metric_field": "metric", "sort_direction_field": "direction", "ranking_population": "all_complete_mlb_database_team_ids_in_season", "tie_policy": "competition_rank_inclusive"}
+      "output_metrics": [
+        "games",
+        "plate_appearances",
+        "at_bats",
+        "runs",
+        "hits",
+        "doubles",
+        "triples",
+        "home_runs",
+        "runs_batted_in",
+        "walks",
+        "strikeouts",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops",
+        "metric_component_coverage_percent"
+      ],
+      "allowed_metrics": [
+        "plate_appearances",
+        "at_bats",
+        "runs",
+        "hits",
+        "doubles",
+        "triples",
+        "home_runs",
+        "runs_batted_in",
+        "walks",
+        "strikeouts",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops"
+      ],
+      "request_fields": [
+        "season",
+        "metric",
+        "direction",
+        "top_n",
+        "limit"
+      ],
+      "required_request_fields": [
+        "season",
+        "metric",
+        "direction",
+        "top_n"
+      ],
+      "sql_parameters": [
+        "season",
+        "metric",
+        "direction",
+        "top_n"
+      ],
+      "semantics": {
+        "operation": "leaderboard",
+        "stat_domain": "team_batting",
+        "entity_type": "team_season",
+        "time_scope": "exact_season",
+        "aggregation_grain": "one_pooled_regular_season_row_per_database_team_id",
+        "ranking_metric_field": "metric",
+        "sort_direction_field": "direction",
+        "ranking_population": "all_complete_mlb_database_team_ids_in_season",
+        "tie_policy": "competition_rank_inclusive"
+      }
     },
     "mlb_team_season_pitching_metric_leaders": {
       "description": "Rank MLB database team IDs by complete pooled pitching or team-record production in one exact regular season, retaining boundary ties.",
       "path": "sql/queries/mlb_team_season_pitching_metric_leaders.sql",
-      "output_metrics": ["games", "wins", "losses", "innings_outs", "innings_pitched", "hits_allowed", "home_runs_allowed", "walks_allowed", "strikeouts", "era", "metric_component_coverage_percent"],
-      "allowed_metrics": ["wins", "losses", "innings_outs", "hits_allowed", "home_runs_allowed", "walks_allowed", "strikeouts", "era"],
-      "request_fields": ["season", "metric", "direction", "top_n", "limit"],
-      "required_request_fields": ["season", "metric", "direction", "top_n"],
-      "sql_parameters": ["season", "metric", "direction", "top_n"],
-      "semantics": {"operation": "leaderboard", "stat_domain": "team_pitching", "entity_type": "team_season", "time_scope": "exact_season", "aggregation_grain": "one_pooled_regular_season_row_per_database_team_id", "ranking_metric_field": "metric", "sort_direction_field": "direction", "ranking_population": "all_complete_mlb_database_team_ids_in_season", "tie_policy": "competition_rank_inclusive"}
+      "output_metrics": [
+        "games",
+        "wins",
+        "losses",
+        "innings_outs",
+        "innings_pitched",
+        "hits_allowed",
+        "home_runs_allowed",
+        "walks_allowed",
+        "strikeouts",
+        "era",
+        "metric_component_coverage_percent"
+      ],
+      "allowed_metrics": [
+        "wins",
+        "losses",
+        "innings_outs",
+        "hits_allowed",
+        "home_runs_allowed",
+        "walks_allowed",
+        "strikeouts",
+        "era"
+      ],
+      "request_fields": [
+        "season",
+        "metric",
+        "direction",
+        "top_n",
+        "limit"
+      ],
+      "required_request_fields": [
+        "season",
+        "metric",
+        "direction",
+        "top_n"
+      ],
+      "sql_parameters": [
+        "season",
+        "metric",
+        "direction",
+        "top_n"
+      ],
+      "semantics": {
+        "operation": "leaderboard",
+        "stat_domain": "team_pitching",
+        "entity_type": "team_season",
+        "time_scope": "exact_season",
+        "aggregation_grain": "one_pooled_regular_season_row_per_database_team_id",
+        "ranking_metric_field": "metric",
+        "sort_direction_field": "direction",
+        "ranking_population": "all_complete_mlb_database_team_ids_in_season",
+        "tie_policy": "competition_rank_inclusive"
+      }
     },
     "team_batting_period_summary": {
       "description": "Pooled batting totals and rates for one database team ID over an exact or inclusive regular-season period.",
       "path": "sql/queries/team_season_batting_summary.sql",
-      "output_metrics": ["games", "plate_appearances", "at_bats", "runs", "hits", "doubles", "triples", "home_runs", "runs_batted_in", "walks", "strikeouts", "stolen_bases", "avg", "obp", "slg", "ops", "metric_component_coverage_percent"],
-      "allowed_metrics": ["team_batting_summary", "plate_appearances", "at_bats", "runs", "hits", "doubles", "triples", "home_runs", "runs_batted_in", "walks", "strikeouts", "stolen_bases", "avg", "obp", "slg", "ops"],
-      "request_fields": ["team_id", "start_season", "end_season", "metric", "limit"],
-      "required_request_fields": ["team_id", "start_season", "end_season", "metric"],
-      "sql_parameters": ["team_id", "start_season", "end_season", "metric"],
-      "semantics": {"operation": "team_summary", "stat_domain": "team_batting", "entity_type": "team_period", "time_scope": "exact_or_inclusive_season_period", "aggregation_grain": "one_pooled_regular_season_row_for_one_database_team_id", "team_scope": "database_team_id", "supports_team_filter": true}
+      "output_metrics": [
+        "games",
+        "plate_appearances",
+        "at_bats",
+        "runs",
+        "hits",
+        "doubles",
+        "triples",
+        "home_runs",
+        "runs_batted_in",
+        "walks",
+        "strikeouts",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops",
+        "metric_component_coverage_percent",
+        "singles"
+      ],
+      "allowed_metrics": [
+        "team_batting_summary",
+        "plate_appearances",
+        "at_bats",
+        "runs",
+        "hits",
+        "doubles",
+        "triples",
+        "home_runs",
+        "runs_batted_in",
+        "walks",
+        "strikeouts",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops"
+      ],
+      "request_fields": [
+        "team_id",
+        "start_season",
+        "end_season",
+        "metric",
+        "limit"
+      ],
+      "required_request_fields": [
+        "team_id",
+        "start_season",
+        "end_season",
+        "metric"
+      ],
+      "sql_parameters": [
+        "team_id",
+        "start_season",
+        "end_season",
+        "metric"
+      ],
+      "semantics": {
+        "operation": "team_summary",
+        "stat_domain": "team_batting",
+        "entity_type": "team_period",
+        "time_scope": "exact_or_inclusive_season_period",
+        "aggregation_grain": "one_pooled_regular_season_row_for_one_database_team_id",
+        "team_scope": "database_team_id",
+        "supports_team_filter": true
+      }
     },
     "team_pitching_period_summary": {
       "description": "Pooled pitching totals and rates for one database team ID over an exact or inclusive regular-season period.",
       "path": "sql/queries/team_season_pitching_summary.sql",
-      "output_metrics": ["games", "wins", "losses", "innings_outs", "innings_pitched", "batters_faced", "hits_allowed", "home_runs_allowed", "runs_allowed", "earned_runs_allowed", "walks_allowed", "strikeouts", "era", "metric_component_coverage_percent"],
-      "allowed_metrics": ["team_pitching_summary", "wins", "losses", "innings_outs", "batters_faced", "hits_allowed", "home_runs_allowed", "runs_allowed", "earned_runs_allowed", "walks_allowed", "strikeouts", "era"],
-      "request_fields": ["team_id", "start_season", "end_season", "metric", "limit"],
-      "required_request_fields": ["team_id", "start_season", "end_season", "metric"],
-      "sql_parameters": ["team_id", "start_season", "end_season", "metric"],
-      "semantics": {"operation": "team_summary", "stat_domain": "team_pitching", "entity_type": "team_period", "time_scope": "exact_or_inclusive_season_period", "aggregation_grain": "one_pooled_regular_season_row_for_one_database_team_id", "team_scope": "database_team_id", "supports_team_filter": true}
+      "output_metrics": [
+        "games",
+        "wins",
+        "losses",
+        "innings_outs",
+        "innings_pitched",
+        "batters_faced",
+        "hits_allowed",
+        "home_runs_allowed",
+        "runs_allowed",
+        "earned_runs_allowed",
+        "walks_allowed",
+        "strikeouts",
+        "era",
+        "metric_component_coverage_percent"
+      ],
+      "allowed_metrics": [
+        "team_pitching_summary",
+        "wins",
+        "losses",
+        "innings_outs",
+        "batters_faced",
+        "hits_allowed",
+        "home_runs_allowed",
+        "runs_allowed",
+        "earned_runs_allowed",
+        "walks_allowed",
+        "strikeouts",
+        "era"
+      ],
+      "request_fields": [
+        "team_id",
+        "start_season",
+        "end_season",
+        "metric",
+        "limit"
+      ],
+      "required_request_fields": [
+        "team_id",
+        "start_season",
+        "end_season",
+        "metric"
+      ],
+      "sql_parameters": [
+        "team_id",
+        "start_season",
+        "end_season",
+        "metric"
+      ],
+      "semantics": {
+        "operation": "team_summary",
+        "stat_domain": "team_pitching",
+        "entity_type": "team_period",
+        "time_scope": "exact_or_inclusive_season_period",
+        "aggregation_grain": "one_pooled_regular_season_row_for_one_database_team_id",
+        "team_scope": "database_team_id",
+        "supports_team_filter": true
+      }
     },
     "mlb_season_pooled_batting_rate": {
       "description": "One MLB season batting rate pooled from underlying totals for an explicitly defined player population.",
       "path": "sql/queries/mlb_season_pooled_batting_rate.sql",
-      "output_metrics": ["average_value", "plate_appearances", "walks", "qualifying_players", "included_players", "player_component_coverage_percent"],
-      "allowed_metrics": ["avg", "obp", "slg", "ops", "walk_percentage"],
-      "request_fields": ["season", "metric", "min_pa", "limit"],
-      "required_request_fields": ["season", "metric", "min_pa"],
-      "sql_parameters": ["season", "metric", "min_pa"],
-      "semantics": {"operation": "population_average", "stat_domain": "batting", "entity_type": "mlb_player_population", "time_scope": "exact_season", "aggregation_grain": "pooled_underlying_player_totals", "average_method": "pooled_weighted", "population_field": "min_pa", "qualification": {"metric": "plate_appearances", "configurable": true}}
+      "output_metrics": [
+        "average_value",
+        "plate_appearances",
+        "walks",
+        "qualifying_players",
+        "included_players",
+        "player_component_coverage_percent"
+      ],
+      "allowed_metrics": [
+        "avg",
+        "obp",
+        "slg",
+        "ops",
+        "walk_percentage"
+      ],
+      "request_fields": [
+        "season",
+        "metric",
+        "min_pa",
+        "limit"
+      ],
+      "required_request_fields": [
+        "season",
+        "metric",
+        "min_pa"
+      ],
+      "sql_parameters": [
+        "season",
+        "metric",
+        "min_pa"
+      ],
+      "semantics": {
+        "operation": "population_average",
+        "stat_domain": "batting",
+        "entity_type": "mlb_player_population",
+        "time_scope": "exact_season",
+        "aggregation_grain": "pooled_underlying_player_totals",
+        "average_method": "pooled_weighted",
+        "population_field": "min_pa",
+        "qualification": {
+          "metric": "plate_appearances",
+          "configurable": true
+        }
+      }
     },
     "mlb_season_unweighted_player_batting_rate_average": {
       "description": "Arithmetic mean of complete player batting rates for one explicitly defined MLB-season population.",
       "path": "sql/queries/mlb_season_unweighted_player_batting_rate_average.sql",
-      "output_metrics": ["average_value", "qualifying_players", "included_players", "player_component_coverage_percent"],
-      "allowed_metrics": ["avg", "obp", "slg", "ops"],
-      "request_fields": ["season", "metric", "min_pa", "limit"],
-      "required_request_fields": ["season", "metric", "min_pa"],
-      "sql_parameters": ["season", "metric", "min_pa"],
-      "semantics": {"operation": "population_average", "stat_domain": "batting", "entity_type": "mlb_player_population", "time_scope": "exact_season", "aggregation_grain": "unweighted_player_rates", "average_method": "unweighted", "population_field": "min_pa", "qualification": {"metric": "plate_appearances", "configurable": true}}
+      "output_metrics": [
+        "average_value",
+        "qualifying_players",
+        "included_players",
+        "player_component_coverage_percent"
+      ],
+      "allowed_metrics": [
+        "avg",
+        "obp",
+        "slg",
+        "ops"
+      ],
+      "request_fields": [
+        "season",
+        "metric",
+        "min_pa",
+        "limit"
+      ],
+      "required_request_fields": [
+        "season",
+        "metric",
+        "min_pa"
+      ],
+      "sql_parameters": [
+        "season",
+        "metric",
+        "min_pa"
+      ],
+      "semantics": {
+        "operation": "population_average",
+        "stat_domain": "batting",
+        "entity_type": "mlb_player_population",
+        "time_scope": "exact_season",
+        "aggregation_grain": "unweighted_player_rates",
+        "average_method": "unweighted",
+        "population_field": "min_pa",
+        "qualification": {
+          "metric": "plate_appearances",
+          "configurable": true
+        }
+      }
     },
     "career_batting_leaders": {
       "description": "Career regular-season batting leaders with a 600 PA minimum.",
       "path": "sql/queries/career_batting_leaders.sql",
-      "output_metrics": ["plate_appearances", "at_bats", "hits", "home_runs"],
+      "output_metrics": [
+        "plate_appearances",
+        "at_bats",
+        "hits",
+        "home_runs"
+      ],
       "semantics": {
         "operation": "leaderboard",
         "entity_type": "player",
@@ -173,13 +584,22 @@
         "ranking_metric": "home_runs",
         "sort_direction": "descending",
         "supports_player_filter": false,
-        "qualification": {"metric": "plate_appearances", "minimum": 600, "configurable": false}
+        "qualification": {
+          "metric": "plate_appearances",
+          "minimum": 600,
+          "configurable": false
+        }
       }
     },
     "career_pitching_leaders": {
       "description": "Career regular-season pitching leaders with a 100 IP minimum.",
       "path": "sql/queries/career_pitching_leaders.sql",
-      "output_metrics": ["innings_outs", "innings_pitched", "wins", "strikeouts"],
+      "output_metrics": [
+        "innings_outs",
+        "innings_pitched",
+        "wins",
+        "strikeouts"
+      ],
       "semantics": {
         "operation": "leaderboard",
         "entity_type": "player",
@@ -187,73 +607,414 @@
         "ranking_metric": "wins",
         "sort_direction": "descending",
         "supports_player_filter": false,
-        "qualification": {"metric": "innings_outs", "minimum": 300, "configurable": false}
+        "qualification": {
+          "metric": "innings_outs",
+          "minimum": 300,
+          "configurable": false
+        }
       }
     },
     "career_batting_metric_leaders": {
       "description": "Career regular-season batting leaders by one approved metric, exact PA threshold, direction, optional approved tiebreaker, and competition-rank cutoff ties.",
       "path": "sql/queries/career_batting_metric_leaders.sql",
-      "output_metrics": ["plate_appearances", "hits", "home_runs", "stolen_bases", "avg", "obp", "slg", "ops"],
-      "allowed_metrics": ["plate_appearances", "hits", "home_runs", "stolen_bases", "avg", "obp", "slg", "ops"],
-      "request_fields": ["metric", "secondary_metric", "direction", "min_pa", "limit"],
-      "required_request_fields": ["metric", "direction", "min_pa"],
-      "sql_parameters": ["metric", "secondary_metric", "direction", "min_pa", "limit"],
-      "semantics": {"operation": "leaderboard", "stat_domain": "batting", "entity_type": "player", "time_scope": "career", "ranking_metric_field": "metric", "sort_direction_field": "direction", "tie_policy": "competition_rank_inclusive", "supports_player_filter": false, "qualification": {"metric": "plate_appearances", "configurable": true}}
+      "output_metrics": [
+        "plate_appearances",
+        "hits",
+        "home_runs",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops",
+        "runs",
+        "doubles",
+        "triples",
+        "runs_batted_in",
+        "walks",
+        "strikeouts",
+        "singles"
+      ],
+      "allowed_metrics": [
+        "plate_appearances",
+        "hits",
+        "home_runs",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops",
+        "runs",
+        "doubles",
+        "triples",
+        "runs_batted_in",
+        "walks",
+        "strikeouts",
+        "singles"
+      ],
+      "request_fields": [
+        "metric",
+        "secondary_metric",
+        "direction",
+        "min_pa",
+        "limit"
+      ],
+      "required_request_fields": [
+        "metric",
+        "direction",
+        "min_pa"
+      ],
+      "sql_parameters": [
+        "metric",
+        "secondary_metric",
+        "direction",
+        "min_pa",
+        "limit"
+      ],
+      "semantics": {
+        "operation": "leaderboard",
+        "stat_domain": "batting",
+        "entity_type": "player",
+        "time_scope": "career",
+        "ranking_metric_field": "metric",
+        "sort_direction_field": "direction",
+        "tie_policy": "competition_rank_inclusive",
+        "supports_player_filter": false,
+        "qualification": {
+          "metric": "plate_appearances",
+          "configurable": true
+        }
+      }
     },
     "career_pitching_metric_leaders": {
       "description": "Career regular-season pitching leaders by one approved metric, direction, exact IP/starts thresholds, optional tiebreaker, and competition-rank cutoff ties.",
       "path": "sql/queries/career_pitching_metric_leaders.sql",
-      "output_metrics": ["innings_outs", "games_started", "wins", "losses", "saves", "strikeouts", "era", "earned_run_coverage_percent"],
-      "allowed_metrics": ["wins", "saves", "strikeouts", "era"],
-      "request_fields": ["metric", "secondary_metric", "direction", "min_ip_outs", "min_starts", "limit"],
-      "required_request_fields": ["metric", "direction", "min_ip_outs", "min_starts"],
-      "sql_parameters": ["metric", "secondary_metric", "direction", "min_ip_outs", "min_starts", "limit"],
-      "semantics": {"operation": "leaderboard", "stat_domain": "pitching", "entity_type": "pitcher", "time_scope": "career", "ranking_metric_field": "metric", "sort_direction_field": "direction", "tie_policy": "competition_rank_inclusive", "supports_player_filter": false, "qualification": {"configurable": true, "fields": ["innings_outs", "games_started"]}}
+      "output_metrics": [
+        "innings_outs",
+        "games_started",
+        "wins",
+        "losses",
+        "saves",
+        "strikeouts",
+        "era",
+        "earned_run_coverage_percent"
+      ],
+      "allowed_metrics": [
+        "wins",
+        "saves",
+        "strikeouts",
+        "era"
+      ],
+      "request_fields": [
+        "metric",
+        "secondary_metric",
+        "direction",
+        "min_ip_outs",
+        "min_starts",
+        "limit"
+      ],
+      "required_request_fields": [
+        "metric",
+        "direction",
+        "min_ip_outs",
+        "min_starts"
+      ],
+      "sql_parameters": [
+        "metric",
+        "secondary_metric",
+        "direction",
+        "min_ip_outs",
+        "min_starts",
+        "limit"
+      ],
+      "semantics": {
+        "operation": "leaderboard",
+        "stat_domain": "pitching",
+        "entity_type": "pitcher",
+        "time_scope": "career",
+        "ranking_metric_field": "metric",
+        "sort_direction_field": "direction",
+        "tie_policy": "competition_rank_inclusive",
+        "supports_player_filter": false,
+        "qualification": {
+          "configurable": true,
+          "fields": [
+            "innings_outs",
+            "games_started"
+          ]
+        }
+      }
     },
     "period_pitching_metric_leaders": {
       "description": "Pitching leaders over an exact season or inclusive period using pooled totals, an approved metric, exact IP/starts thresholds, direction, optional tiebreaker, and competition-rank cutoff ties.",
       "path": "sql/queries/period_pitching_metric_leaders.sql",
-      "output_metrics": ["innings_outs", "innings_pitched", "games_started", "wins", "losses", "saves", "strikeouts", "era", "earned_run_coverage_percent"],
-      "allowed_metrics": ["innings_outs", "games_started", "wins", "losses", "saves", "strikeouts", "era"],
-      "request_fields": ["start_season", "end_season", "metric", "secondary_metric", "direction", "min_ip_outs", "min_starts", "limit"],
-      "required_request_fields": ["start_season", "end_season", "metric", "direction", "min_ip_outs", "min_starts"],
-      "sql_parameters": ["start_season", "end_season", "metric", "secondary_metric", "direction", "min_ip_outs", "min_starts", "limit"],
-      "semantics": {"operation": "leaderboard", "stat_domain": "pitching", "entity_type": "pitcher_period", "time_scope": "exact_or_inclusive_season_period", "aggregation_grain": "pooled_regular_season_pitching_rows", "ranking_metric_field": "metric", "sort_direction_field": "direction", "tie_policy": "competition_rank_inclusive", "supports_player_filter": false, "qualification": {"configurable": true, "fields": ["innings_outs", "games_started"]}}
+      "output_metrics": [
+        "innings_outs",
+        "innings_pitched",
+        "games_started",
+        "wins",
+        "losses",
+        "saves",
+        "strikeouts",
+        "era",
+        "earned_run_coverage_percent"
+      ],
+      "allowed_metrics": [
+        "innings_outs",
+        "games_started",
+        "wins",
+        "losses",
+        "saves",
+        "strikeouts",
+        "era"
+      ],
+      "request_fields": [
+        "start_season",
+        "end_season",
+        "metric",
+        "secondary_metric",
+        "direction",
+        "min_ip_outs",
+        "min_starts",
+        "limit"
+      ],
+      "required_request_fields": [
+        "start_season",
+        "end_season",
+        "metric",
+        "direction",
+        "min_ip_outs",
+        "min_starts"
+      ],
+      "sql_parameters": [
+        "start_season",
+        "end_season",
+        "metric",
+        "secondary_metric",
+        "direction",
+        "min_ip_outs",
+        "min_starts",
+        "limit"
+      ],
+      "semantics": {
+        "operation": "leaderboard",
+        "stat_domain": "pitching",
+        "entity_type": "pitcher_period",
+        "time_scope": "exact_or_inclusive_season_period",
+        "aggregation_grain": "pooled_regular_season_pitching_rows",
+        "ranking_metric_field": "metric",
+        "sort_direction_field": "direction",
+        "tie_policy": "competition_rank_inclusive",
+        "supports_player_filter": false,
+        "qualification": {
+          "configurable": true,
+          "fields": [
+            "innings_outs",
+            "games_started"
+          ]
+        }
+      }
     },
     "team_season_batting_metric_leaders": {
       "description": "Tie-inclusive batting leaders for one exact database team ID and regular season by one approved metric and PA threshold.",
       "path": "sql/queries/team_season_batting_metric_leaders.sql",
-      "output_metrics": ["plate_appearances", "hits", "home_runs", "stolen_bases", "strikeouts", "avg", "obp", "slg", "ops"],
-      "allowed_metrics": ["plate_appearances", "hits", "home_runs", "stolen_bases", "strikeouts", "avg", "obp", "slg", "ops"],
-      "request_fields": ["team_id", "season", "metric", "direction", "min_pa", "top_n", "limit"],
-      "required_request_fields": ["team_id", "season", "metric", "direction", "min_pa", "top_n"],
-      "sql_parameters": ["team_id", "season", "metric", "direction", "min_pa", "top_n"],
-      "semantics": {"operation": "leaderboard", "stat_domain": "batting", "entity_type": "team_player_season", "time_scope": "exact_season", "team_scope": "exact_database_team_id", "ranking_metric_field": "metric", "sort_direction_field": "direction", "tie_policy": "competition_rank_inclusive", "qualification": {"metric": "plate_appearances", "configurable": true}}
+      "output_metrics": [
+        "plate_appearances",
+        "hits",
+        "home_runs",
+        "stolen_bases",
+        "strikeouts",
+        "avg",
+        "obp",
+        "slg",
+        "ops"
+      ],
+      "allowed_metrics": [
+        "plate_appearances",
+        "hits",
+        "home_runs",
+        "stolen_bases",
+        "strikeouts",
+        "avg",
+        "obp",
+        "slg",
+        "ops"
+      ],
+      "request_fields": [
+        "team_id",
+        "season",
+        "metric",
+        "direction",
+        "min_pa",
+        "top_n",
+        "limit"
+      ],
+      "required_request_fields": [
+        "team_id",
+        "season",
+        "metric",
+        "direction",
+        "min_pa",
+        "top_n"
+      ],
+      "sql_parameters": [
+        "team_id",
+        "season",
+        "metric",
+        "direction",
+        "min_pa",
+        "top_n"
+      ],
+      "semantics": {
+        "operation": "leaderboard",
+        "stat_domain": "batting",
+        "entity_type": "team_player_season",
+        "time_scope": "exact_season",
+        "team_scope": "exact_database_team_id",
+        "ranking_metric_field": "metric",
+        "sort_direction_field": "direction",
+        "tie_policy": "competition_rank_inclusive",
+        "qualification": {
+          "metric": "plate_appearances",
+          "configurable": true
+        }
+      }
     },
     "team_game_batting_condition_count": {
       "description": "Count one team's exact-season regular-season games satisfying every supplied batting counting-stat condition.",
       "path": "sql/queries/team_game_batting_condition_count.sql",
-      "output_metrics": ["matching_games", "source_team_games", "condition_component_coverage_percent"],
-      "allowed_condition_metrics": ["plate_appearances", "hits", "home_runs", "stolen_bases"],
-      "request_fields": ["team_id", "season", "venue", "conditions", "limit"],
-      "required_request_fields": ["team_id", "season", "conditions"],
-      "sql_parameters": ["team_id", "season", "venue", "condition_1_active", "condition_1_metric", "condition_1_operator", "condition_1_value", "condition_2_active", "condition_2_metric", "condition_2_operator", "condition_2_value", "condition_3_active", "condition_3_metric", "condition_3_operator", "condition_3_value", "condition_4_active", "condition_4_metric", "condition_4_operator", "condition_4_value"],
-      "semantics": {"operation": "occurrence_count", "stat_domain": "team_batting", "entity_type": "team_game", "time_scope": "exact_season", "aggregation_grain": "one_regular_season_team_game_row", "team_scope": "exact_database_team_id", "condition_policy": "all_conditions_required", "coverage_policy": "withhold_count_unless_all_source_games_have_condition_components"}
+      "output_metrics": [
+        "matching_games",
+        "source_team_games",
+        "condition_component_coverage_percent"
+      ],
+      "allowed_condition_metrics": [
+        "plate_appearances",
+        "hits",
+        "home_runs",
+        "stolen_bases"
+      ],
+      "request_fields": [
+        "team_id",
+        "season",
+        "venue",
+        "conditions",
+        "limit"
+      ],
+      "required_request_fields": [
+        "team_id",
+        "season",
+        "conditions"
+      ],
+      "sql_parameters": [
+        "team_id",
+        "season",
+        "venue",
+        "condition_1_active",
+        "condition_1_metric",
+        "condition_1_operator",
+        "condition_1_value",
+        "condition_2_active",
+        "condition_2_metric",
+        "condition_2_operator",
+        "condition_2_value",
+        "condition_3_active",
+        "condition_3_metric",
+        "condition_3_operator",
+        "condition_3_value",
+        "condition_4_active",
+        "condition_4_metric",
+        "condition_4_operator",
+        "condition_4_value"
+      ],
+      "semantics": {
+        "operation": "occurrence_count",
+        "stat_domain": "team_batting",
+        "entity_type": "team_game",
+        "time_scope": "exact_season",
+        "aggregation_grain": "one_regular_season_team_game_row",
+        "team_scope": "exact_database_team_id",
+        "condition_policy": "all_conditions_required",
+        "coverage_policy": "withhold_count_unless_all_source_games_have_condition_components"
+      }
     },
     "team_season_pitching_metric_leaders": {
       "description": "Tie-inclusive pitching leaders for one exact database team ID and regular season by one approved metric and IP/starts thresholds.",
       "path": "sql/queries/team_season_pitching_metric_leaders.sql",
-      "output_metrics": ["innings_outs", "innings_pitched", "games_started", "wins", "losses", "saves", "strikeouts", "era", "earned_run_coverage_percent"],
-      "allowed_metrics": ["wins", "losses", "saves", "strikeouts", "era"],
-      "request_fields": ["team_id", "season", "metric", "direction", "min_ip_outs", "min_starts", "top_n", "limit"],
-      "required_request_fields": ["team_id", "season", "metric", "direction", "min_ip_outs", "min_starts", "top_n"],
-      "sql_parameters": ["team_id", "season", "metric", "direction", "min_ip_outs", "min_starts", "top_n"],
-      "semantics": {"operation": "leaderboard", "stat_domain": "pitching", "entity_type": "team_pitcher_season", "time_scope": "exact_season", "team_scope": "exact_database_team_id", "ranking_metric_field": "metric", "sort_direction_field": "direction", "tie_policy": "competition_rank_inclusive", "qualification": {"configurable": true, "fields": ["innings_outs", "games_started"]}}
+      "output_metrics": [
+        "innings_outs",
+        "innings_pitched",
+        "games_started",
+        "wins",
+        "losses",
+        "saves",
+        "strikeouts",
+        "era",
+        "earned_run_coverage_percent"
+      ],
+      "allowed_metrics": [
+        "wins",
+        "losses",
+        "saves",
+        "strikeouts",
+        "era"
+      ],
+      "request_fields": [
+        "team_id",
+        "season",
+        "metric",
+        "direction",
+        "min_ip_outs",
+        "min_starts",
+        "top_n",
+        "limit"
+      ],
+      "required_request_fields": [
+        "team_id",
+        "season",
+        "metric",
+        "direction",
+        "min_ip_outs",
+        "min_starts",
+        "top_n"
+      ],
+      "sql_parameters": [
+        "team_id",
+        "season",
+        "metric",
+        "direction",
+        "min_ip_outs",
+        "min_starts",
+        "top_n"
+      ],
+      "semantics": {
+        "operation": "leaderboard",
+        "stat_domain": "pitching",
+        "entity_type": "team_pitcher_season",
+        "time_scope": "exact_season",
+        "team_scope": "exact_database_team_id",
+        "ranking_metric_field": "metric",
+        "sort_direction_field": "direction",
+        "tie_policy": "competition_rank_inclusive",
+        "qualification": {
+          "configurable": true,
+          "fields": [
+            "innings_outs",
+            "games_started"
+          ]
+        }
+      }
     },
     "single_season_batting_leaders": {
       "description": "Single-season OPS leaders with a 502 PA minimum.",
       "path": "sql/queries/single_season_batting_leaders.sql",
-      "output_metrics": ["plate_appearances", "home_runs", "avg", "obp", "slg", "ops"],
+      "output_metrics": [
+        "plate_appearances",
+        "home_runs",
+        "avg",
+        "obp",
+        "slg",
+        "ops"
+      ],
       "semantics": {
         "operation": "leaderboard",
         "entity_type": "player_season",
@@ -261,93 +1022,472 @@
         "ranking_metric": "ops",
         "sort_direction": "descending",
         "supports_player_filter": false,
-        "qualification": {"metric": "plate_appearances", "minimum": 502, "configurable": false}
+        "qualification": {
+          "metric": "plate_appearances",
+          "minimum": 502,
+          "configurable": false
+        }
       }
     },
     "period_batting_metric_leaders": {
       "description": "Batting leaders over an exact season or inclusive period using pooled totals, an approved metric, exact PA threshold, direction, optional tiebreaker, and competition-rank cutoff ties.",
       "path": "sql/queries/period_batting_metric_leaders.sql",
-      "output_metrics": ["plate_appearances", "hits", "home_runs", "stolen_bases", "avg", "obp", "slg", "ops"],
-      "allowed_metrics": ["plate_appearances", "hits", "home_runs", "stolen_bases", "avg", "obp", "slg", "ops"],
-      "request_fields": ["start_season", "end_season", "metric", "secondary_metric", "direction", "min_pa", "limit"],
-      "required_request_fields": ["start_season", "end_season", "metric", "direction", "min_pa"],
-      "sql_parameters": ["start_season", "end_season", "metric", "secondary_metric", "direction", "min_pa", "limit"],
-      "semantics": {"operation": "leaderboard", "stat_domain": "batting", "entity_type": "player_period", "time_scope": "exact_or_inclusive_season_period", "ranking_metric_field": "metric", "sort_direction_field": "direction", "tie_policy": "competition_rank_inclusive", "supports_player_filter": false, "qualification": {"metric": "plate_appearances", "configurable": true}}
+      "output_metrics": [
+        "plate_appearances",
+        "hits",
+        "home_runs",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops",
+        "runs",
+        "doubles",
+        "triples",
+        "runs_batted_in",
+        "walks",
+        "strikeouts",
+        "singles"
+      ],
+      "allowed_metrics": [
+        "plate_appearances",
+        "hits",
+        "home_runs",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops",
+        "runs",
+        "doubles",
+        "triples",
+        "runs_batted_in",
+        "walks",
+        "strikeouts",
+        "singles"
+      ],
+      "request_fields": [
+        "start_season",
+        "end_season",
+        "metric",
+        "secondary_metric",
+        "direction",
+        "min_pa",
+        "limit"
+      ],
+      "required_request_fields": [
+        "start_season",
+        "end_season",
+        "metric",
+        "direction",
+        "min_pa"
+      ],
+      "sql_parameters": [
+        "start_season",
+        "end_season",
+        "metric",
+        "secondary_metric",
+        "direction",
+        "min_pa",
+        "limit"
+      ],
+      "semantics": {
+        "operation": "leaderboard",
+        "stat_domain": "batting",
+        "entity_type": "player_period",
+        "time_scope": "exact_or_inclusive_season_period",
+        "ranking_metric_field": "metric",
+        "sort_direction_field": "direction",
+        "tie_policy": "competition_rank_inclusive",
+        "supports_player_filter": false,
+        "qualification": {
+          "metric": "plate_appearances",
+          "configurable": true
+        }
+      }
     },
     "player_batting_top_n_seasons": {
       "description": "Count seasons one player ranked in an MLB-wide top N for an approved batting metric using competition-rank tie inclusion.",
       "path": "sql/queries/player_batting_top_n_seasons.sql",
-      "output_metrics": ["matching_seasons", "matching_season_list", "matching_rank_list"],
-      "allowed_metrics": ["hits", "home_runs", "stolen_bases", "avg", "obp", "slg", "ops"],
-      "request_fields": ["player_id", "start_season", "end_season", "metric", "direction", "min_pa", "top_n"],
-      "required_request_fields": ["player_id", "start_season", "end_season", "metric", "direction", "min_pa", "top_n"],
-      "sql_parameters": ["player_id", "start_season", "end_season", "metric", "direction", "min_pa", "top_n"],
-      "semantics": {"operation": "top_n_season_frequency", "stat_domain": "batting", "entity_type": "player_season", "time_scope": "inclusive_season_range", "ranking_population": "mlb_wide_recorded_player_seasons", "tie_policy": "competition_rank_inclusive", "supports_player_filter": true, "qualification": {"metric": "plate_appearances", "configurable": true}}
+      "output_metrics": [
+        "matching_seasons",
+        "matching_season_list",
+        "matching_rank_list"
+      ],
+      "allowed_metrics": [
+        "hits",
+        "home_runs",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops"
+      ],
+      "request_fields": [
+        "player_id",
+        "start_season",
+        "end_season",
+        "metric",
+        "direction",
+        "min_pa",
+        "top_n"
+      ],
+      "required_request_fields": [
+        "player_id",
+        "start_season",
+        "end_season",
+        "metric",
+        "direction",
+        "min_pa",
+        "top_n"
+      ],
+      "sql_parameters": [
+        "player_id",
+        "start_season",
+        "end_season",
+        "metric",
+        "direction",
+        "min_pa",
+        "top_n"
+      ],
+      "semantics": {
+        "operation": "top_n_season_frequency",
+        "stat_domain": "batting",
+        "entity_type": "player_season",
+        "time_scope": "inclusive_season_range",
+        "ranking_population": "mlb_wide_recorded_player_seasons",
+        "tie_policy": "competition_rank_inclusive",
+        "supports_player_filter": true,
+        "qualification": {
+          "metric": "plate_appearances",
+          "configurable": true
+        }
+      }
     },
     "player_batting_condition_seasons": {
       "description": "Count regular-season player-seasons satisfying every supplied approved batting condition.",
       "path": "sql/queries/player_batting_condition_seasons.sql",
-      "output_metrics": ["matching_seasons", "matching_season_list"],
-      "allowed_condition_metrics": ["plate_appearances", "hits", "home_runs", "stolen_bases", "avg", "obp", "slg", "ops"],
-      "request_fields": ["player_id", "start_season", "end_season", "conditions"],
-      "required_request_fields": ["player_id", "start_season", "end_season", "conditions"],
-      "sql_parameters": ["player_id", "start_season", "end_season", "condition_1_active", "condition_1_metric", "condition_1_operator", "condition_1_value", "condition_2_active", "condition_2_metric", "condition_2_operator", "condition_2_value", "condition_3_active", "condition_3_metric", "condition_3_operator", "condition_3_value", "condition_4_active", "condition_4_metric", "condition_4_operator", "condition_4_value"],
-      "semantics": {"operation": "season_condition_count", "stat_domain": "batting", "entity_type": "player_season", "time_scope": "inclusive_season_range", "aggregation_grain": "one_regular_season_player_season", "condition_policy": "all_conditions_must_match", "supports_player_filter": true}
+      "output_metrics": [
+        "matching_seasons",
+        "matching_season_list"
+      ],
+      "allowed_condition_metrics": [
+        "plate_appearances",
+        "hits",
+        "home_runs",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops",
+        "runs_batted_in"
+      ],
+      "request_fields": [
+        "player_id",
+        "start_season",
+        "end_season",
+        "conditions"
+      ],
+      "required_request_fields": [
+        "player_id",
+        "start_season",
+        "end_season",
+        "conditions"
+      ],
+      "sql_parameters": [
+        "player_id",
+        "start_season",
+        "end_season",
+        "condition_1_active",
+        "condition_1_metric",
+        "condition_1_operator",
+        "condition_1_value",
+        "condition_2_active",
+        "condition_2_metric",
+        "condition_2_operator",
+        "condition_2_value",
+        "condition_3_active",
+        "condition_3_metric",
+        "condition_3_operator",
+        "condition_3_value",
+        "condition_4_active",
+        "condition_4_metric",
+        "condition_4_operator",
+        "condition_4_value"
+      ],
+      "semantics": {
+        "operation": "season_condition_count",
+        "stat_domain": "batting",
+        "entity_type": "player_season",
+        "time_scope": "inclusive_season_range",
+        "aggregation_grain": "one_regular_season_player_season",
+        "condition_policy": "all_conditions_must_match",
+        "supports_player_filter": true
+      }
     },
     "player_batting_walk_percentage": {
       "description": "One player's pooled regular-season walk percentage with walks as numerator and plate appearances as denominator.",
       "path": "sql/queries/player_batting_walk_percentage.sql",
-      "output_metrics": ["numerator_walks", "denominator_plate_appearances", "walk_percentage", "component_coverage_percent"],
-      "request_fields": ["player_id", "start_season", "end_season"],
-      "required_request_fields": ["player_id", "start_season", "end_season"],
-      "sql_parameters": ["player_id", "start_season", "end_season"],
-      "semantics": {"operation": "player_rate", "stat_domain": "batting", "entity_type": "player", "time_scope": "exact_or_inclusive_season_period", "rate_definition": {"numerator": "walks", "denominator": "plate_appearances", "display_format": "percentage"}, "supports_player_filter": true}
+      "output_metrics": [
+        "numerator_walks",
+        "denominator_plate_appearances",
+        "walk_percentage",
+        "component_coverage_percent"
+      ],
+      "request_fields": [
+        "player_id",
+        "start_season",
+        "end_season"
+      ],
+      "required_request_fields": [
+        "player_id",
+        "start_season",
+        "end_season"
+      ],
+      "sql_parameters": [
+        "player_id",
+        "start_season",
+        "end_season"
+      ],
+      "semantics": {
+        "operation": "player_rate",
+        "stat_domain": "batting",
+        "entity_type": "player",
+        "time_scope": "exact_or_inclusive_season_period",
+        "rate_definition": {
+          "numerator": "walks",
+          "denominator": "plate_appearances",
+          "display_format": "percentage"
+        },
+        "supports_player_filter": true
+      }
     },
     "player_pitching_rate_summary": {
       "description": "One pitcher's pooled regular-season strikeout or walk rate for an exact season, inclusive range, career, or one documented database team ID.",
       "path": "sql/queries/player_pitching_rate_summary.sql",
-      "output_metrics": ["numerator_strikeouts", "numerator_walks", "denominator_value", "rate_value", "component_coverage_percent"],
-      "allowed_metrics": ["strikeouts_per_nine", "strikeout_percentage", "walks_per_nine", "walk_percentage"],
-      "request_fields": ["player_id", "team_id", "start_season", "end_season", "metric", "limit"],
-      "required_request_fields": ["player_id", "start_season", "end_season", "metric"],
-      "sql_parameters": ["player_id", "team_id", "start_season", "end_season", "metric"],
-      "semantics": {"operation": "player_rate", "stat_domain": "pitching", "entity_type": "pitcher", "time_scope": "exact_or_inclusive_season_period", "aggregation_grain": "pooled_regular_season_pitching_rows", "optional_team_scope": "database_team_id", "supports_player_filter": true}
+      "output_metrics": [
+        "numerator_strikeouts",
+        "numerator_walks",
+        "denominator_value",
+        "rate_value",
+        "component_coverage_percent"
+      ],
+      "allowed_metrics": [
+        "strikeouts_per_nine",
+        "strikeout_percentage",
+        "walks_per_nine",
+        "walk_percentage"
+      ],
+      "request_fields": [
+        "player_id",
+        "team_id",
+        "start_season",
+        "end_season",
+        "metric",
+        "limit"
+      ],
+      "required_request_fields": [
+        "player_id",
+        "start_season",
+        "end_season",
+        "metric"
+      ],
+      "sql_parameters": [
+        "player_id",
+        "team_id",
+        "start_season",
+        "end_season",
+        "metric"
+      ],
+      "semantics": {
+        "operation": "player_rate",
+        "stat_domain": "pitching",
+        "entity_type": "pitcher",
+        "time_scope": "exact_or_inclusive_season_period",
+        "aggregation_grain": "pooled_regular_season_pitching_rows",
+        "optional_team_scope": "database_team_id",
+        "supports_player_filter": true
+      },
+      "metric_components": {
+        "strikeouts_per_nine": [
+          "strikeouts"
+        ],
+        "strikeout_percentage": [
+          "strikeouts",
+          "batters_faced"
+        ],
+        "walks_per_nine": [
+          "walks"
+        ],
+        "walk_percentage": [
+          "walks",
+          "batters_faced"
+        ]
+      }
     },
     "player_batting_rate_summary": {
       "description": "One hitter's pooled regular-season strikeout, walk, or home-run percentage for an exact season, inclusive range, career, or one documented database team ID.",
       "path": "sql/queries/player_batting_rate_summary.sql",
-      "output_metrics": ["numerator_strikeouts", "numerator_walks", "numerator_home_runs", "denominator_plate_appearances", "rate_value", "component_coverage_percent"],
-      "allowed_metrics": ["strikeout_percentage", "walk_percentage", "home_run_percentage"],
-      "request_fields": ["player_id", "team_id", "start_season", "end_season", "metric", "limit"],
-      "required_request_fields": ["player_id", "start_season", "end_season", "metric"],
-      "sql_parameters": ["player_id", "team_id", "start_season", "end_season", "metric"],
-      "semantics": {"operation": "player_rate", "stat_domain": "batting", "entity_type": "hitter", "time_scope": "exact_or_inclusive_season_period", "aggregation_grain": "pooled_regular_season_batting_rows", "optional_team_scope": "database_team_id", "supports_player_filter": true}
+      "output_metrics": [
+        "numerator_strikeouts",
+        "numerator_walks",
+        "numerator_home_runs",
+        "denominator_plate_appearances",
+        "rate_value",
+        "component_coverage_percent"
+      ],
+      "allowed_metrics": [
+        "strikeout_percentage",
+        "walk_percentage",
+        "home_run_percentage"
+      ],
+      "request_fields": [
+        "player_id",
+        "team_id",
+        "start_season",
+        "end_season",
+        "metric",
+        "limit"
+      ],
+      "required_request_fields": [
+        "player_id",
+        "start_season",
+        "end_season",
+        "metric"
+      ],
+      "sql_parameters": [
+        "player_id",
+        "team_id",
+        "start_season",
+        "end_season",
+        "metric"
+      ],
+      "semantics": {
+        "operation": "player_rate",
+        "stat_domain": "batting",
+        "entity_type": "hitter",
+        "time_scope": "exact_or_inclusive_season_period",
+        "aggregation_grain": "pooled_regular_season_batting_rows",
+        "optional_team_scope": "database_team_id",
+        "supports_player_filter": true
+      },
+      "metric_components": {
+        "strikeout_percentage": [
+          "strikeouts",
+          "plate_appearances"
+        ],
+        "walk_percentage": [
+          "walks",
+          "plate_appearances"
+        ],
+        "home_run_percentage": [
+          "home_runs",
+          "plate_appearances"
+        ]
+      }
     },
     "player_fielding_period_summary": {
       "description": "One player's documented regular-season fielding-error total for an exact season, inclusive range, career, or one database team ID.",
       "path": "sql/queries/player_fielding_period_summary.sql",
-      "output_metrics": ["games", "errors", "documented_position_codes", "component_coverage_percent"],
-      "allowed_metrics": ["errors"],
-      "request_fields": ["player_id", "team_id", "start_season", "end_season", "metric", "limit"],
-      "required_request_fields": ["player_id", "start_season", "end_season", "metric"],
-      "sql_parameters": ["player_id", "team_id", "start_season", "end_season"],
-      "semantics": {"operation": "player_fielding_summary", "stat_domain": "fielding", "entity_type": "fielder", "time_scope": "exact_or_inclusive_season_period", "aggregation_grain": "documented_regular_season_player_game_position_rows", "optional_team_scope": "database_team_id", "supports_player_filter": true}
+      "output_metrics": [
+        "games",
+        "errors",
+        "documented_position_codes",
+        "component_coverage_percent"
+      ],
+      "allowed_metrics": [
+        "errors"
+      ],
+      "request_fields": [
+        "player_id",
+        "team_id",
+        "start_season",
+        "end_season",
+        "metric",
+        "limit"
+      ],
+      "required_request_fields": [
+        "player_id",
+        "start_season",
+        "end_season",
+        "metric"
+      ],
+      "sql_parameters": [
+        "player_id",
+        "team_id",
+        "start_season",
+        "end_season"
+      ],
+      "semantics": {
+        "operation": "player_fielding_summary",
+        "stat_domain": "fielding",
+        "entity_type": "fielder",
+        "time_scope": "exact_or_inclusive_season_period",
+        "aggregation_grain": "documented_regular_season_player_game_position_rows",
+        "optional_team_scope": "database_team_id",
+        "supports_player_filter": true
+      }
     },
     "player_game_batting_condition_count": {
       "description": "Count regular-season player games satisfying one approved batting condition after pooling by game ID.",
       "path": "sql/queries/player_game_batting_condition_count.sql",
-      "output_metrics": ["matching_games", "condition_metric", "condition_threshold", "source_player_games", "matching_game_ids", "condition_component_coverage_percent"],
-      "allowed_condition_metrics": ["home_runs", "hits"],
+      "output_metrics": [
+        "matching_games",
+        "condition_metric",
+        "condition_threshold",
+        "source_player_games",
+        "matching_game_ids",
+        "condition_component_coverage_percent"
+      ],
+      "allowed_condition_metrics": [
+        "home_runs",
+        "hits"
+      ],
       "maximum_conditions": 1,
-      "request_fields": ["player_id", "team_id", "start_season", "end_season", "conditions", "limit"],
-      "required_request_fields": ["player_id", "start_season", "end_season", "conditions"],
-      "sql_parameters": ["player_id", "team_id", "start_season", "end_season", "condition_1_metric", "condition_1_operator", "condition_1_value"],
-      "semantics": {"operation": "player_game_condition_count", "stat_domain": "batting", "entity_type": "player_game", "time_scope": "exact_or_inclusive_season_period", "aggregation_grain": "one_regular_season_player_game", "condition_policy": "all_conditions_must_match", "optional_team_scope": "database_team_id", "supports_player_filter": true}
+      "request_fields": [
+        "player_id",
+        "team_id",
+        "start_season",
+        "end_season",
+        "conditions",
+        "limit"
+      ],
+      "required_request_fields": [
+        "player_id",
+        "start_season",
+        "end_season",
+        "conditions"
+      ],
+      "sql_parameters": [
+        "player_id",
+        "team_id",
+        "start_season",
+        "end_season",
+        "condition_1_metric",
+        "condition_1_operator",
+        "condition_1_value"
+      ],
+      "semantics": {
+        "operation": "player_game_condition_count",
+        "stat_domain": "batting",
+        "entity_type": "player_game",
+        "time_scope": "exact_or_inclusive_season_period",
+        "aggregation_grain": "one_regular_season_player_game",
+        "condition_policy": "all_conditions_must_match",
+        "optional_team_scope": "database_team_id",
+        "supports_player_filter": true
+      }
     },
     "single_season_pitching_leaders": {
       "description": "Single-season FIP leaders with a 162 IP minimum and valid seasonal context.",
       "path": "sql/queries/single_season_pitching_leaders.sql",
-      "output_metrics": ["innings_pitched", "home_runs_allowed", "walks_allowed", "strikeouts", "fip"],
+      "output_metrics": [
+        "innings_pitched",
+        "home_runs_allowed",
+        "walks_allowed",
+        "strikeouts",
+        "fip"
+      ],
       "semantics": {
         "operation": "leaderboard",
         "entity_type": "player_season",
@@ -355,16 +1495,34 @@
         "ranking_metric": "fip",
         "sort_direction": "ascending",
         "supports_player_filter": false,
-        "qualification": {"metric": "innings_outs", "minimum": 486, "configurable": false}
+        "qualification": {
+          "metric": "innings_outs",
+          "minimum": 486,
+          "configurable": false
+        }
       }
     },
     "season_pitching_fip_leaders": {
       "description": "FIP leaders for one exact season with a 162 IP minimum and valid seasonal context.",
       "path": "sql/queries/season_pitching_fip_leaders.sql",
-      "output_metrics": ["innings_pitched", "home_runs_allowed", "walks_allowed", "strikeouts", "fip"],
-      "request_fields": ["season", "limit"],
-      "required_request_fields": ["season"],
-      "sql_parameters": ["season", "limit"],
+      "output_metrics": [
+        "innings_pitched",
+        "home_runs_allowed",
+        "walks_allowed",
+        "strikeouts",
+        "fip"
+      ],
+      "request_fields": [
+        "season",
+        "limit"
+      ],
+      "required_request_fields": [
+        "season"
+      ],
+      "sql_parameters": [
+        "season",
+        "limit"
+      ],
       "semantics": {
         "operation": "leaderboard",
         "entity_type": "player_season",
@@ -372,23 +1530,45 @@
         "ranking_metric": "fip",
         "sort_direction": "ascending",
         "supports_player_filter": false,
-        "qualification": {"metric": "innings_outs", "minimum": 486, "configurable": false}
+        "qualification": {
+          "metric": "innings_outs",
+          "minimum": 486,
+          "configurable": false
+        }
       }
     },
     "season_pitching_wins_leaders": {
       "description": "Pitcher wins leaders for one exact regular season without a default qualification threshold.",
       "path": "sql/queries/season_pitching_wins_leaders.sql",
-      "output_metrics": ["innings_pitched", "games_started", "wins", "losses", "strikeouts"],
-      "request_fields": ["season", "limit"],
-      "required_request_fields": ["season"],
-      "sql_parameters": ["season", "limit"],
+      "output_metrics": [
+        "innings_pitched",
+        "games_started",
+        "wins",
+        "losses",
+        "strikeouts"
+      ],
+      "request_fields": [
+        "season",
+        "limit"
+      ],
+      "required_request_fields": [
+        "season"
+      ],
+      "sql_parameters": [
+        "season",
+        "limit"
+      ],
       "semantics": {
         "operation": "leaderboard",
         "entity_type": "player_season",
         "time_scope": "exact_season",
         "ranking_metric": "wins",
         "sort_direction": "descending",
-        "tiebreakers": ["innings_outs", "strikeouts", "player_id"],
+        "tiebreakers": [
+          "innings_outs",
+          "strikeouts",
+          "player_id"
+        ],
         "supports_player_filter": false,
         "qualification": null
       }
@@ -396,10 +1576,34 @@
     "player_career_batting_summary": {
       "description": "Career regular-season batting totals for one database-resolved player.",
       "path": "sql/queries/player_career_batting_summary.sql",
-      "output_metrics": ["plate_appearances", "at_bats", "runs", "hits", "doubles", "triples", "home_runs", "runs_batted_in", "walks", "strikeouts", "stolen_bases", "avg", "obp", "slg", "ops"],
-      "request_fields": ["player_id", "limit"],
-      "required_request_fields": ["player_id"],
-      "sql_parameters": ["player_id"],
+      "output_metrics": [
+        "plate_appearances",
+        "at_bats",
+        "runs",
+        "hits",
+        "doubles",
+        "triples",
+        "home_runs",
+        "runs_batted_in",
+        "walks",
+        "strikeouts",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops",
+        "singles"
+      ],
+      "request_fields": [
+        "player_id",
+        "limit"
+      ],
+      "required_request_fields": [
+        "player_id"
+      ],
+      "sql_parameters": [
+        "player_id"
+      ],
       "semantics": {
         "operation": "player_summary",
         "stat_domain": "batting",
@@ -411,10 +1615,37 @@
     "player_season_batting_summary": {
       "description": "Regular-season batting totals for one database-resolved player in one exact season.",
       "path": "sql/queries/player_season_batting_summary.sql",
-      "output_metrics": ["plate_appearances", "at_bats", "runs", "hits", "doubles", "triples", "home_runs", "runs_batted_in", "walks", "strikeouts", "stolen_bases", "avg", "obp", "slg", "ops"],
-      "request_fields": ["player_id", "season", "limit"],
-      "required_request_fields": ["player_id", "season"],
-      "sql_parameters": ["player_id", "season"],
+      "output_metrics": [
+        "plate_appearances",
+        "at_bats",
+        "runs",
+        "hits",
+        "doubles",
+        "triples",
+        "home_runs",
+        "runs_batted_in",
+        "walks",
+        "strikeouts",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops",
+        "singles"
+      ],
+      "request_fields": [
+        "player_id",
+        "season",
+        "limit"
+      ],
+      "required_request_fields": [
+        "player_id",
+        "season"
+      ],
+      "sql_parameters": [
+        "player_id",
+        "season"
+      ],
       "semantics": {
         "operation": "player_summary",
         "stat_domain": "batting",
@@ -426,10 +1657,34 @@
     "player_latest_season_batting_summary": {
       "description": "Regular-season batting totals from one database-resolved player's latest recorded season.",
       "path": "sql/queries/player_latest_season_batting_summary.sql",
-      "output_metrics": ["plate_appearances", "at_bats", "runs", "hits", "doubles", "triples", "home_runs", "runs_batted_in", "walks", "strikeouts", "stolen_bases", "avg", "obp", "slg", "ops"],
-      "request_fields": ["player_id", "limit"],
-      "required_request_fields": ["player_id"],
-      "sql_parameters": ["player_id"],
+      "output_metrics": [
+        "plate_appearances",
+        "at_bats",
+        "runs",
+        "hits",
+        "doubles",
+        "triples",
+        "home_runs",
+        "runs_batted_in",
+        "walks",
+        "strikeouts",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops",
+        "singles"
+      ],
+      "request_fields": [
+        "player_id",
+        "limit"
+      ],
+      "required_request_fields": [
+        "player_id"
+      ],
+      "sql_parameters": [
+        "player_id"
+      ],
       "semantics": {
         "operation": "player_summary",
         "stat_domain": "batting",
@@ -441,10 +1696,26 @@
     "player_career_pitching_summary": {
       "description": "Career regular-season pitching totals and coverage-qualified ERA and FIP for one database-resolved player.",
       "path": "sql/queries/player_career_pitching_summary.sql",
-      "output_metrics": ["innings_pitched", "wins", "saves", "strikeouts", "era", "fip", "earned_run_coverage_percent", "fip_coverage_percent"],
-      "request_fields": ["player_id", "limit"],
-      "required_request_fields": ["player_id"],
-      "sql_parameters": ["player_id"],
+      "output_metrics": [
+        "innings_pitched",
+        "wins",
+        "saves",
+        "strikeouts",
+        "era",
+        "fip",
+        "earned_run_coverage_percent",
+        "fip_coverage_percent"
+      ],
+      "request_fields": [
+        "player_id",
+        "limit"
+      ],
+      "required_request_fields": [
+        "player_id"
+      ],
+      "sql_parameters": [
+        "player_id"
+      ],
       "semantics": {
         "operation": "player_summary",
         "stat_domain": "pitching",
@@ -456,10 +1727,29 @@
     "player_season_pitching_summary": {
       "description": "Exact-season regular-season pitching totals and coverage-qualified ERA and FIP for one database-resolved player.",
       "path": "sql/queries/player_season_pitching_summary.sql",
-      "output_metrics": ["innings_pitched", "wins", "saves", "strikeouts", "era", "fip", "earned_run_coverage_percent", "fip_coverage_percent"],
-      "request_fields": ["player_id", "season", "limit"],
-      "required_request_fields": ["player_id", "season"],
-      "sql_parameters": ["player_id", "season"],
+      "output_metrics": [
+        "innings_pitched",
+        "wins",
+        "saves",
+        "strikeouts",
+        "era",
+        "fip",
+        "earned_run_coverage_percent",
+        "fip_coverage_percent"
+      ],
+      "request_fields": [
+        "player_id",
+        "season",
+        "limit"
+      ],
+      "required_request_fields": [
+        "player_id",
+        "season"
+      ],
+      "sql_parameters": [
+        "player_id",
+        "season"
+      ],
       "semantics": {
         "operation": "player_summary",
         "stat_domain": "pitching",
@@ -471,10 +1761,26 @@
     "player_latest_season_pitching_summary": {
       "description": "Latest recorded regular-season pitching totals and coverage-qualified ERA and FIP for one database-resolved player.",
       "path": "sql/queries/player_latest_season_pitching_summary.sql",
-      "output_metrics": ["innings_pitched", "wins", "saves", "strikeouts", "era", "fip", "earned_run_coverage_percent", "fip_coverage_percent"],
-      "request_fields": ["player_id", "limit"],
-      "required_request_fields": ["player_id"],
-      "sql_parameters": ["player_id"],
+      "output_metrics": [
+        "innings_pitched",
+        "wins",
+        "saves",
+        "strikeouts",
+        "era",
+        "fip",
+        "earned_run_coverage_percent",
+        "fip_coverage_percent"
+      ],
+      "request_fields": [
+        "player_id",
+        "limit"
+      ],
+      "required_request_fields": [
+        "player_id"
+      ],
+      "sql_parameters": [
+        "player_id"
+      ],
       "semantics": {
         "operation": "player_summary",
         "stat_domain": "pitching",
@@ -486,91 +1792,385 @@
     "player_first_season_batting_summary": {
       "description": "Batting totals from one player's first recorded regular-season database season; not an official rookie-eligibility claim.",
       "path": "sql/queries/player_first_season_batting_summary.sql",
-      "output_metrics": ["plate_appearances", "at_bats", "runs", "hits", "doubles", "triples", "home_runs", "runs_batted_in", "walks", "strikeouts", "stolen_bases", "avg", "obp", "slg", "ops"],
-      "request_fields": ["player_id", "limit"],
-      "required_request_fields": ["player_id"],
-      "sql_parameters": ["player_id"],
-      "semantics": {"operation": "player_summary", "stat_domain": "batting", "entity_type": "player_season", "time_scope": "first_recorded_player_season", "supports_player_filter": true}
+      "output_metrics": [
+        "plate_appearances",
+        "at_bats",
+        "runs",
+        "hits",
+        "doubles",
+        "triples",
+        "home_runs",
+        "runs_batted_in",
+        "walks",
+        "strikeouts",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops",
+        "singles"
+      ],
+      "request_fields": [
+        "player_id",
+        "limit"
+      ],
+      "required_request_fields": [
+        "player_id"
+      ],
+      "sql_parameters": [
+        "player_id"
+      ],
+      "semantics": {
+        "operation": "player_summary",
+        "stat_domain": "batting",
+        "entity_type": "player_season",
+        "time_scope": "first_recorded_player_season",
+        "supports_player_filter": true
+      }
     },
     "player_first_season_pitching_summary": {
       "description": "Pitching totals from one player's first recorded regular-season database season; not an official rookie-eligibility claim.",
       "path": "sql/queries/player_first_season_pitching_summary.sql",
-      "output_metrics": ["innings_outs", "innings_pitched", "batters_faced", "games_started", "wins", "losses", "saves", "strikeouts", "era", "earned_run_coverage_percent"],
-      "request_fields": ["player_id", "limit"],
-      "required_request_fields": ["player_id"],
-      "sql_parameters": ["player_id"],
-      "semantics": {"operation": "player_summary", "stat_domain": "pitching", "entity_type": "pitcher_season", "time_scope": "first_recorded_player_season", "supports_player_filter": true}
+      "output_metrics": [
+        "innings_outs",
+        "innings_pitched",
+        "batters_faced",
+        "games_started",
+        "wins",
+        "losses",
+        "saves",
+        "strikeouts",
+        "era",
+        "earned_run_coverage_percent"
+      ],
+      "request_fields": [
+        "player_id",
+        "limit"
+      ],
+      "required_request_fields": [
+        "player_id"
+      ],
+      "sql_parameters": [
+        "player_id"
+      ],
+      "semantics": {
+        "operation": "player_summary",
+        "stat_domain": "pitching",
+        "entity_type": "pitcher_season",
+        "time_scope": "first_recorded_player_season",
+        "supports_player_filter": true
+      }
     },
     "player_season_two_way_summary": {
       "description": "Exact-season regular-season batting and pitching evidence for one documented two-way player.",
       "path": "sql/queries/player_season_two_way_summary.sql",
-      "output_metrics": ["batting_plate_appearances", "batting_hits", "batting_home_runs", "batting_avg", "batting_obp", "batting_slg", "batting_ops", "pitching_innings_outs", "pitching_wins", "pitching_strikeouts", "pitching_era", "pitching_earned_run_coverage_percent"],
-      "request_fields": ["player_id", "season", "limit"],
-      "required_request_fields": ["player_id", "season"],
-      "sql_parameters": ["player_id", "season"],
-      "semantics": {"operation": "player_summary", "stat_domain": "two_way", "entity_type": "two_way_player_season", "time_scope": "exact_season", "supports_player_filter": true}
+      "output_metrics": [
+        "batting_plate_appearances",
+        "batting_hits",
+        "batting_home_runs",
+        "batting_avg",
+        "batting_obp",
+        "batting_slg",
+        "batting_ops",
+        "pitching_innings_outs",
+        "pitching_wins",
+        "pitching_strikeouts",
+        "pitching_era",
+        "pitching_earned_run_coverage_percent"
+      ],
+      "request_fields": [
+        "player_id",
+        "season",
+        "limit"
+      ],
+      "required_request_fields": [
+        "player_id",
+        "season"
+      ],
+      "sql_parameters": [
+        "player_id",
+        "season"
+      ],
+      "semantics": {
+        "operation": "player_summary",
+        "stat_domain": "two_way",
+        "entity_type": "two_way_player_season",
+        "time_scope": "exact_season",
+        "supports_player_filter": true
+      }
     },
     "player_two_way_range_summary": {
       "description": "Pooled batting and pitching evidence for one documented two-way player over an inclusive season range.",
       "path": "sql/queries/player_two_way_range_summary.sql",
-      "output_metrics": ["batting_plate_appearances", "batting_hits", "batting_home_runs", "batting_avg", "batting_obp", "batting_slg", "batting_ops", "pitching_innings_outs", "pitching_wins", "pitching_strikeouts", "pitching_era", "pitching_earned_run_coverage_percent"],
-      "request_fields": ["player_id", "start_season", "end_season", "limit"],
-      "required_request_fields": ["player_id", "start_season", "end_season"],
-      "sql_parameters": ["player_id", "start_season", "end_season"],
-      "semantics": {"operation": "player_summary", "stat_domain": "two_way", "entity_type": "two_way_player_period", "time_scope": "inclusive_season_range", "aggregation_grain": "pooled_regular_season_batting_and_pitching_rows", "supports_player_filter": true, "coverage_policy": "both batting and pitching evidence required"}
+      "output_metrics": [
+        "batting_plate_appearances",
+        "batting_hits",
+        "batting_home_runs",
+        "batting_avg",
+        "batting_obp",
+        "batting_slg",
+        "batting_ops",
+        "pitching_innings_outs",
+        "pitching_wins",
+        "pitching_strikeouts",
+        "pitching_era",
+        "pitching_earned_run_coverage_percent"
+      ],
+      "request_fields": [
+        "player_id",
+        "start_season",
+        "end_season",
+        "limit"
+      ],
+      "required_request_fields": [
+        "player_id",
+        "start_season",
+        "end_season"
+      ],
+      "sql_parameters": [
+        "player_id",
+        "start_season",
+        "end_season"
+      ],
+      "semantics": {
+        "operation": "player_summary",
+        "stat_domain": "two_way",
+        "entity_type": "two_way_player_period",
+        "time_scope": "inclusive_season_range",
+        "aggregation_grain": "pooled_regular_season_batting_and_pitching_rows",
+        "supports_player_filter": true,
+        "coverage_policy": "both batting and pitching evidence required"
+      }
     },
     "player_batting_range_summary": {
       "description": "Pooled regular-season batting totals for one player over an inclusive season range.",
       "path": "sql/queries/player_batting_range_summary.sql",
-      "output_metrics": ["plate_appearances", "at_bats", "runs", "hits", "doubles", "triples", "home_runs", "runs_batted_in", "walks", "strikeouts", "stolen_bases", "avg", "obp", "slg", "ops"],
-      "request_fields": ["player_id", "team_id", "start_season", "end_season", "limit"],
-      "required_request_fields": ["player_id", "start_season", "end_season"],
-      "sql_parameters": ["player_id", "team_id", "start_season", "end_season"],
-      "semantics": {"operation": "player_summary", "stat_domain": "batting", "entity_type": "player", "time_scope": "inclusive_season_range", "team_scope": "optional_exact_database_team_id", "supports_player_filter": true, "supports_team_filter": true}
+      "output_metrics": [
+        "plate_appearances",
+        "at_bats",
+        "runs",
+        "hits",
+        "doubles",
+        "triples",
+        "home_runs",
+        "runs_batted_in",
+        "walks",
+        "strikeouts",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops",
+        "singles"
+      ],
+      "request_fields": [
+        "player_id",
+        "team_id",
+        "start_season",
+        "end_season",
+        "limit"
+      ],
+      "required_request_fields": [
+        "player_id",
+        "start_season",
+        "end_season"
+      ],
+      "sql_parameters": [
+        "player_id",
+        "team_id",
+        "start_season",
+        "end_season"
+      ],
+      "semantics": {
+        "operation": "player_summary",
+        "stat_domain": "batting",
+        "entity_type": "player",
+        "time_scope": "inclusive_season_range",
+        "team_scope": "optional_exact_database_team_id",
+        "supports_player_filter": true,
+        "supports_team_filter": true
+      }
     },
     "player_pitching_range_summary": {
       "description": "Pooled regular-season pitching totals for one player over an inclusive season range.",
       "path": "sql/queries/player_pitching_range_summary.sql",
-      "output_metrics": ["innings_outs", "innings_pitched", "batters_faced", "games_started", "wins", "losses", "saves", "strikeouts", "era", "earned_run_coverage_percent"],
-      "request_fields": ["player_id", "team_id", "start_season", "end_season", "limit"],
-      "required_request_fields": ["player_id", "start_season", "end_season"],
-      "sql_parameters": ["player_id", "team_id", "start_season", "end_season"],
-      "semantics": {"operation": "player_summary", "stat_domain": "pitching", "entity_type": "pitcher", "time_scope": "inclusive_season_range", "team_scope": "optional_exact_database_team_id", "supports_player_filter": true, "supports_team_filter": true}
+      "output_metrics": [
+        "innings_outs",
+        "innings_pitched",
+        "batters_faced",
+        "games_started",
+        "wins",
+        "losses",
+        "saves",
+        "strikeouts",
+        "era",
+        "earned_run_coverage_percent"
+      ],
+      "request_fields": [
+        "player_id",
+        "team_id",
+        "start_season",
+        "end_season",
+        "limit"
+      ],
+      "required_request_fields": [
+        "player_id",
+        "start_season",
+        "end_season"
+      ],
+      "sql_parameters": [
+        "player_id",
+        "team_id",
+        "start_season",
+        "end_season"
+      ],
+      "semantics": {
+        "operation": "player_summary",
+        "stat_domain": "pitching",
+        "entity_type": "pitcher",
+        "time_scope": "inclusive_season_range",
+        "team_scope": "optional_exact_database_team_id",
+        "supports_player_filter": true,
+        "supports_team_filter": true
+      }
     },
     "player_team_service": {
       "description": "Documented service by distinct database team ID; does not claim organization or franchise lineage.",
       "path": "sql/queries/player_team_service.sql",
-      "output_metrics": ["documented_seasons", "distinct_database_team_id_count"],
-      "request_fields": ["player_id"],
-      "required_request_fields": ["player_id"],
-      "sql_parameters": ["player_id"],
-      "semantics": {"operation": "player_service", "entity_type": "player_team_service", "time_scope": "career", "aggregation_grain": "database_team_id", "supports_player_filter": true}
+      "output_metrics": [
+        "documented_seasons",
+        "distinct_database_team_id_count"
+      ],
+      "request_fields": [
+        "player_id"
+      ],
+      "required_request_fields": [
+        "player_id"
+      ],
+      "sql_parameters": [
+        "player_id"
+      ],
+      "semantics": {
+        "operation": "player_service",
+        "entity_type": "player_team_service",
+        "time_scope": "career",
+        "aggregation_grain": "database_team_id",
+        "supports_player_filter": true,
+        "context_kind": "identity"
+      }
     },
     "player_team_batting_summary": {
       "description": "Pooled regular-season batting statistics accumulated by one player for one documented database team ID.",
       "path": "sql/queries/player_team_batting_summary.sql",
-      "output_metrics": ["documented_seasons", "plate_appearances", "at_bats", "runs", "hits", "doubles", "triples", "home_runs", "runs_batted_in", "walks", "strikeouts", "stolen_bases", "avg", "obp", "slg", "ops"],
-      "request_fields": ["player_id", "team_id"],
-      "required_request_fields": ["player_id", "team_id"],
-      "sql_parameters": ["player_id", "team_id"],
-      "semantics": {"operation": "player_summary", "stat_domain": "batting", "entity_type": "player_team_service", "time_scope": "career_for_database_team_id", "team_scope": "database_team_id", "supports_player_filter": true, "supports_team_filter": true}
+      "output_metrics": [
+        "documented_seasons",
+        "plate_appearances",
+        "at_bats",
+        "runs",
+        "hits",
+        "doubles",
+        "triples",
+        "home_runs",
+        "runs_batted_in",
+        "walks",
+        "strikeouts",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops",
+        "singles"
+      ],
+      "request_fields": [
+        "player_id",
+        "team_id"
+      ],
+      "required_request_fields": [
+        "player_id",
+        "team_id"
+      ],
+      "sql_parameters": [
+        "player_id",
+        "team_id"
+      ],
+      "semantics": {
+        "operation": "player_summary",
+        "stat_domain": "batting",
+        "entity_type": "player_team_service",
+        "time_scope": "career_for_database_team_id",
+        "team_scope": "database_team_id",
+        "supports_player_filter": true,
+        "supports_team_filter": true
+      }
     },
     "player_team_pitching_summary": {
       "description": "Pooled regular-season pitching statistics accumulated by one player for one documented database team ID.",
       "path": "sql/queries/player_team_pitching_summary.sql",
-      "output_metrics": ["documented_seasons", "innings_outs", "innings_pitched", "batters_faced", "games_started", "wins", "losses", "saves", "strikeouts", "era", "earned_run_coverage_percent"],
-      "request_fields": ["player_id", "team_id"],
-      "required_request_fields": ["player_id", "team_id"],
-      "sql_parameters": ["player_id", "team_id"],
-      "semantics": {"operation": "player_summary", "stat_domain": "pitching", "entity_type": "pitcher_team_service", "time_scope": "career_for_database_team_id", "team_scope": "database_team_id", "supports_player_filter": true, "supports_team_filter": true}
+      "output_metrics": [
+        "documented_seasons",
+        "innings_outs",
+        "innings_pitched",
+        "batters_faced",
+        "games_started",
+        "wins",
+        "losses",
+        "saves",
+        "strikeouts",
+        "era",
+        "earned_run_coverage_percent"
+      ],
+      "request_fields": [
+        "player_id",
+        "team_id"
+      ],
+      "required_request_fields": [
+        "player_id",
+        "team_id"
+      ],
+      "sql_parameters": [
+        "player_id",
+        "team_id"
+      ],
+      "semantics": {
+        "operation": "player_summary",
+        "stat_domain": "pitching",
+        "entity_type": "pitcher_team_service",
+        "time_scope": "career_for_database_team_id",
+        "team_scope": "database_team_id",
+        "supports_player_filter": true,
+        "supports_team_filter": true
+      }
     },
     "team_calendar_date_record": {
       "description": "One team's regular-season record on a recurring month and day from a starting season, with game evidence.",
       "path": "sql/queries/team_calendar_date_record.sql",
-      "output_metrics": ["games", "wins", "losses", "ties", "win_percentage"],
-      "request_fields": ["team_id", "month", "day", "start_season", "limit"],
-      "required_request_fields": ["team_id", "month", "day", "start_season"],
-      "sql_parameters": ["team_id", "month", "day", "start_season", "limit"],
+      "output_metrics": [
+        "games",
+        "wins",
+        "losses",
+        "ties",
+        "win_percentage"
+      ],
+      "request_fields": [
+        "team_id",
+        "month",
+        "day",
+        "start_season",
+        "limit"
+      ],
+      "required_request_fields": [
+        "team_id",
+        "month",
+        "day",
+        "start_season"
+      ],
+      "sql_parameters": [
+        "team_id",
+        "month",
+        "day",
+        "start_season",
+        "limit"
+      ],
       "semantics": {
         "operation": "team_record",
         "entity_type": "team",
@@ -581,10 +2181,28 @@
     "team_season_record": {
       "description": "One documented team's regular-season record for one exact season, optionally limited to home or away games.",
       "path": "sql/queries/team_season_record.sql",
-      "output_metrics": ["games", "wins", "losses", "ties", "win_percentage"],
-      "request_fields": ["team_id", "season", "venue", "limit"],
-      "required_request_fields": ["team_id", "season"],
-      "sql_parameters": ["team_id", "season", "venue"],
+      "output_metrics": [
+        "games",
+        "wins",
+        "losses",
+        "ties",
+        "win_percentage"
+      ],
+      "request_fields": [
+        "team_id",
+        "season",
+        "venue",
+        "limit"
+      ],
+      "required_request_fields": [
+        "team_id",
+        "season"
+      ],
+      "sql_parameters": [
+        "team_id",
+        "season",
+        "venue"
+      ],
       "semantics": {
         "operation": "team_record",
         "entity_type": "team",
@@ -596,10 +2214,29 @@
     "team_opponent_season_record": {
       "description": "One documented team's regular-season record against one documented opponent in one exact season.",
       "path": "sql/queries/team_opponent_season_record.sql",
-      "output_metrics": ["games", "wins", "losses", "ties", "win_percentage"],
-      "request_fields": ["team_id", "opponent_team_id", "season", "limit"],
-      "required_request_fields": ["team_id", "opponent_team_id", "season"],
-      "sql_parameters": ["team_id", "opponent_team_id", "season"],
+      "output_metrics": [
+        "games",
+        "wins",
+        "losses",
+        "ties",
+        "win_percentage"
+      ],
+      "request_fields": [
+        "team_id",
+        "opponent_team_id",
+        "season",
+        "limit"
+      ],
+      "required_request_fields": [
+        "team_id",
+        "opponent_team_id",
+        "season"
+      ],
+      "sql_parameters": [
+        "team_id",
+        "opponent_team_id",
+        "season"
+      ],
       "semantics": {
         "operation": "team_record",
         "entity_type": "team_opponent",
@@ -611,10 +2248,29 @@
     "team_opponent_since_record": {
       "description": "One documented team's regular-season record against one documented opponent from one start season through the latest database season.",
       "path": "sql/queries/team_opponent_since_record.sql",
-      "output_metrics": ["games", "wins", "losses", "ties", "win_percentage"],
-      "request_fields": ["team_id", "opponent_team_id", "start_season", "limit"],
-      "required_request_fields": ["team_id", "opponent_team_id", "start_season"],
-      "sql_parameters": ["team_id", "opponent_team_id", "start_season"],
+      "output_metrics": [
+        "games",
+        "wins",
+        "losses",
+        "ties",
+        "win_percentage"
+      ],
+      "request_fields": [
+        "team_id",
+        "opponent_team_id",
+        "start_season",
+        "limit"
+      ],
+      "required_request_fields": [
+        "team_id",
+        "opponent_team_id",
+        "start_season"
+      ],
+      "sql_parameters": [
+        "team_id",
+        "opponent_team_id",
+        "start_season"
+      ],
       "semantics": {
         "operation": "team_record",
         "entity_type": "team_opponent",
@@ -626,51 +2282,748 @@
     "relative_pair_eligibility": {
       "description": "Related-player pairs meeting the initial hitting or pitching eligibility requirements.",
       "path": "sql/queries/relative_pair_eligibility.sql",
-      "output_metrics": ["combined_home_runs", "combined_wins", "both_hitters_eligible", "both_pitchers_eligible"],
+      "output_metrics": [
+        "combined_home_runs",
+        "combined_wins",
+        "both_hitters_eligible",
+        "both_pitchers_eligible"
+      ],
       "semantics": {
         "operation": "relationship_eligibility",
         "entity_type": "related_pair",
         "time_scope": "career",
-        "ranking_metrics": ["wins", "home_runs"],
+        "ranking_metrics": [
+          "wins",
+          "home_runs"
+        ],
         "supports_player_filter": false
       }
     },
     "best_related_pitching_pair": {
       "description": "One related pitching pair ranked by lowest pooled career ERA with combined strikeouts as the tiebreaker; minimum 100 IP each.",
       "path": "sql/queries/best_related_pitching_pair.sql",
-      "output_metrics": ["pooled_era", "combined_strikeouts", "combined_innings_outs"],
+      "output_metrics": [
+        "pooled_era",
+        "combined_strikeouts",
+        "combined_innings_outs"
+      ],
       "semantics": {
         "operation": "relationship_ranking",
         "entity_type": "related_pitching_pair",
         "time_scope": "career",
-        "ranking_metrics": ["era", "strikeouts"],
+        "ranking_metrics": [
+          "era",
+          "strikeouts"
+        ],
         "sort_direction": "ascending",
-        "qualification": {"metric": "innings_outs", "minimum": 300, "configurable": false}
+        "qualification": {
+          "metric": "innings_outs",
+          "minimum": 300,
+          "configurable": false
+        }
       }
     },
     "best_related_hitting_pair": {
       "description": "One related hitting pair ranked by highest pooled career OPS with combined home runs as the tiebreaker; minimum 600 PA each.",
       "path": "sql/queries/best_related_hitting_pair.sql",
-      "output_metrics": ["pooled_ops", "pooled_obp", "pooled_slg", "combined_home_runs"],
+      "output_metrics": [
+        "pooled_ops",
+        "pooled_obp",
+        "pooled_slg",
+        "combined_home_runs"
+      ],
       "semantics": {
         "operation": "relationship_ranking",
         "entity_type": "related_hitting_pair",
         "time_scope": "career",
-        "ranking_metrics": ["ops", "home_runs"],
+        "ranking_metrics": [
+          "ops",
+          "home_runs"
+        ],
         "sort_direction": "descending",
-        "qualification": {"metric": "plate_appearances", "minimum": 600, "configurable": false}
+        "qualification": {
+          "metric": "plate_appearances",
+          "minimum": 600,
+          "configurable": false
+        }
+      }
+    },
+    "batting_condition_player_seasons": {
+      "description": "Recorded MLB player-seasons matching all explicit approved batting conditions.",
+      "path": "sql/queries/batting_condition_player_seasons.sql",
+      "output_metrics": [
+        "season",
+        "plate_appearances",
+        "hits",
+        "home_runs",
+        "runs_batted_in",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops"
+      ],
+      "allowed_condition_metrics": [
+        "plate_appearances",
+        "hits",
+        "home_runs",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops",
+        "runs_batted_in"
+      ],
+      "request_fields": [
+        "start_season",
+        "end_season",
+        "conditions",
+        "limit"
+      ],
+      "required_request_fields": [
+        "start_season",
+        "end_season",
+        "conditions"
+      ],
+      "sql_parameters": [
+        "start_season",
+        "end_season",
+        "condition_1_active",
+        "condition_1_metric",
+        "condition_1_operator",
+        "condition_1_value",
+        "condition_2_active",
+        "condition_2_metric",
+        "condition_2_operator",
+        "condition_2_value",
+        "condition_3_active",
+        "condition_3_metric",
+        "condition_3_operator",
+        "condition_3_value",
+        "condition_4_active",
+        "condition_4_metric",
+        "condition_4_operator",
+        "condition_4_value",
+        "limit"
+      ],
+      "semantics": {
+        "operation": "condition_search",
+        "stat_domain": "batting",
+        "entity_type": "player_season",
+        "time_scope": "inclusive_season_range",
+        "condition_policy": "all_conditions_must_match"
+      }
+    },
+    "player_batting_season_extremum": {
+      "description": "Rank one documented player's individual seasons by an explicit batting metric, retaining peak-season ties.",
+      "path": "sql/queries/player_batting_season_extremum.sql",
+      "output_metrics": [
+        "plate_appearances",
+        "hits",
+        "home_runs",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops",
+        "runs",
+        "doubles",
+        "triples",
+        "runs_batted_in",
+        "walks",
+        "strikeouts",
+        "singles"
+      ],
+      "allowed_metrics": [
+        "plate_appearances",
+        "hits",
+        "home_runs",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops",
+        "runs",
+        "doubles",
+        "triples",
+        "runs_batted_in",
+        "walks",
+        "strikeouts",
+        "singles"
+      ],
+      "request_fields": [
+        "start_season",
+        "end_season",
+        "metric",
+        "secondary_metric",
+        "direction",
+        "min_pa",
+        "limit",
+        "player_id"
+      ],
+      "required_request_fields": [
+        "start_season",
+        "end_season",
+        "metric",
+        "direction",
+        "min_pa",
+        "player_id"
+      ],
+      "sql_parameters": [
+        "start_season",
+        "end_season",
+        "metric",
+        "secondary_metric",
+        "direction",
+        "min_pa",
+        "limit",
+        "player_id"
+      ],
+      "semantics": {
+        "operation": "player_season_extremum",
+        "stat_domain": "batting",
+        "entity_type": "player_season",
+        "time_scope": "inclusive_season_range",
+        "supports_player_filter": true,
+        "ranking_metric_field": "metric",
+        "tie_policy": "competition_rank_inclusive"
+      }
+    },
+    "mlb_batting_period_total": {
+      "description": "Pooled recorded MLB batting counting totals over an explicit inclusive period; incomplete components are withheld.",
+      "path": "sql/queries/mlb_batting_period_total.sql",
+      "output_metrics": [
+        "plate_appearances",
+        "at_bats",
+        "runs",
+        "hits",
+        "doubles",
+        "triples",
+        "home_runs",
+        "runs_batted_in",
+        "walks",
+        "strikeouts",
+        "stolen_bases"
+      ],
+      "consumed_metrics": [],
+      "request_fields": [
+        "start_season",
+        "end_season",
+        "metric",
+        "limit"
+      ],
+      "required_request_fields": [
+        "start_season",
+        "end_season",
+        "metric"
+      ],
+      "allowed_metrics": [
+        "plate_appearances",
+        "at_bats",
+        "runs",
+        "hits",
+        "doubles",
+        "triples",
+        "home_runs",
+        "runs_batted_in",
+        "walks",
+        "strikeouts",
+        "stolen_bases"
+      ],
+      "sql_parameters": [
+        "start_season",
+        "end_season",
+        "metric"
+      ],
+      "semantics": {
+        "operation": "aggregate_total",
+        "stat_domain": "batting",
+        "entity_type": "mlb_total",
+        "time_scope": "inclusive_season_range"
+      }
+    },
+    "team_season_venue_records": {
+      "description": "Home and road regular-season records returned as separate labeled rows for one team and season.",
+      "path": "sql/queries/team_season_venue_records.sql",
+      "output_metrics": [
+        "games",
+        "wins",
+        "losses",
+        "ties",
+        "win_percentage"
+      ],
+      "request_fields": [
+        "team_id",
+        "season",
+        "limit"
+      ],
+      "required_request_fields": [
+        "team_id",
+        "season"
+      ],
+      "sql_parameters": [
+        "team_id",
+        "season"
+      ],
+      "semantics": {
+        "operation": "team_record",
+        "entity_type": "team_venue",
+        "time_scope": "exact_season",
+        "supports_team_filter": true,
+        "venue_groups": [
+          "home",
+          "away"
+        ]
+      },
+      "minimum_result_limit": 2
+    },
+    "zero_starts_pitching_metric_leaders": {
+      "description": "Pitching metric leaders with explicit population: zero_starts",
+      "path": "sql/queries/zero_starts_pitching_metric_leaders.sql",
+      "output_metrics": [
+        "innings_outs",
+        "innings_pitched",
+        "games_started",
+        "wins",
+        "losses",
+        "saves",
+        "strikeouts",
+        "era",
+        "earned_run_coverage_percent"
+      ],
+      "allowed_metrics": [
+        "innings_outs",
+        "games_started",
+        "wins",
+        "losses",
+        "saves",
+        "strikeouts",
+        "era"
+      ],
+      "request_fields": [
+        "start_season",
+        "end_season",
+        "metric",
+        "secondary_metric",
+        "direction",
+        "min_ip_outs",
+        "min_starts",
+        "limit"
+      ],
+      "required_request_fields": [
+        "start_season",
+        "end_season",
+        "metric",
+        "direction",
+        "min_ip_outs",
+        "min_starts"
+      ],
+      "sql_parameters": [
+        "start_season",
+        "end_season",
+        "metric",
+        "secondary_metric",
+        "direction",
+        "min_ip_outs",
+        "min_starts",
+        "limit"
+      ],
+      "semantics": {
+        "operation": "leaderboard",
+        "stat_domain": "pitching",
+        "entity_type": "pitcher_period",
+        "time_scope": "exact_or_inclusive_season_period",
+        "aggregation_grain": "pooled_regular_season_pitching_rows",
+        "ranking_metric_field": "metric",
+        "sort_direction_field": "direction",
+        "tie_policy": "competition_rank_inclusive",
+        "supports_player_filter": false,
+        "qualification": {
+          "configurable": true,
+          "fields": [
+            "innings_outs",
+            "games_started"
+          ]
+        },
+        "pitching_population": "zero_starts"
+      }
+    },
+    "relief_appearances_pitching_metric_leaders": {
+      "description": "Pitching metric leaders with explicit population: relief_appearances",
+      "path": "sql/queries/relief_appearances_pitching_metric_leaders.sql",
+      "output_metrics": [
+        "innings_outs",
+        "innings_pitched",
+        "games_started",
+        "wins",
+        "losses",
+        "saves",
+        "strikeouts",
+        "era",
+        "earned_run_coverage_percent"
+      ],
+      "allowed_metrics": [
+        "innings_outs",
+        "games_started",
+        "wins",
+        "losses",
+        "saves",
+        "strikeouts",
+        "era"
+      ],
+      "request_fields": [
+        "start_season",
+        "end_season",
+        "metric",
+        "secondary_metric",
+        "direction",
+        "min_ip_outs",
+        "min_starts",
+        "limit"
+      ],
+      "required_request_fields": [
+        "start_season",
+        "end_season",
+        "metric",
+        "direction",
+        "min_ip_outs",
+        "min_starts"
+      ],
+      "sql_parameters": [
+        "start_season",
+        "end_season",
+        "metric",
+        "secondary_metric",
+        "direction",
+        "min_ip_outs",
+        "min_starts",
+        "limit"
+      ],
+      "semantics": {
+        "operation": "leaderboard",
+        "stat_domain": "pitching",
+        "entity_type": "pitcher_period",
+        "time_scope": "exact_or_inclusive_season_period",
+        "aggregation_grain": "pooled_regular_season_pitching_rows",
+        "ranking_metric_field": "metric",
+        "sort_direction_field": "direction",
+        "tie_policy": "competition_rank_inclusive",
+        "supports_player_filter": false,
+        "qualification": {
+          "configurable": true,
+          "fields": [
+            "innings_outs",
+            "games_started"
+          ]
+        },
+        "pitching_population": "relief_appearances"
+      }
+    },
+    "player_pitching_rates_summary": {
+      "description": "One player's explicitly requested pitching rates, with each denominator and complete component coverage.",
+      "path": "sql/queries/player_pitching_rates_summary.sql",
+      "output_metrics": [
+        "strikeouts_per_nine",
+        "walks_per_nine",
+        "strikeout_percentage",
+        "walk_percentage",
+        "strikeouts",
+        "walks",
+        "batters_faced",
+        "innings_outs"
+      ],
+      "allowed_metrics": [
+        "strikeouts_per_nine",
+        "strikeout_percentage",
+        "walks_per_nine",
+        "walk_percentage"
+      ],
+      "request_fields": [
+        "player_id",
+        "team_id",
+        "start_season",
+        "end_season",
+        "limit"
+      ],
+      "required_request_fields": [
+        "player_id",
+        "start_season",
+        "end_season"
+      ],
+      "sql_parameters": [
+        "player_id",
+        "team_id",
+        "start_season",
+        "end_season"
+      ],
+      "semantics": {
+        "operation": "player_rate",
+        "stat_domain": "pitching",
+        "entity_type": "pitcher",
+        "time_scope": "exact_or_inclusive_season_period",
+        "aggregation_grain": "pooled_regular_season_pitching_rows",
+        "optional_team_scope": "database_team_id",
+        "supports_player_filter": true
+      },
+      "represented_rates": [
+        "strikeouts_per_nine",
+        "walks_per_nine",
+        "strikeout_percentage",
+        "walk_percentage"
+      ]
+    },
+    "player_batting_condition_matches": {
+      "description": "List the recorded seasons and actual batting values satisfying every condition for one named player.",
+      "path": "sql/queries/player_batting_condition_matches.sql",
+      "output_metrics": [
+        "season",
+        "plate_appearances",
+        "hits",
+        "home_runs",
+        "runs_batted_in",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops"
+      ],
+      "allowed_condition_metrics": [
+        "plate_appearances",
+        "hits",
+        "home_runs",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops",
+        "runs_batted_in"
+      ],
+      "request_fields": [
+        "player_id",
+        "start_season",
+        "end_season",
+        "conditions",
+        "limit"
+      ],
+      "required_request_fields": [
+        "player_id",
+        "start_season",
+        "end_season",
+        "conditions"
+      ],
+      "sql_parameters": [
+        "player_id",
+        "start_season",
+        "end_season",
+        "condition_1_active",
+        "condition_1_metric",
+        "condition_1_operator",
+        "condition_1_value",
+        "condition_2_active",
+        "condition_2_metric",
+        "condition_2_operator",
+        "condition_2_value",
+        "condition_3_active",
+        "condition_3_metric",
+        "condition_3_operator",
+        "condition_3_value",
+        "condition_4_active",
+        "condition_4_metric",
+        "condition_4_operator",
+        "condition_4_value",
+        "limit"
+      ],
+      "semantics": {
+        "operation": "season_condition_list",
+        "stat_domain": "batting",
+        "entity_type": "player_season",
+        "time_scope": "inclusive_season_range",
+        "condition_policy": "all_conditions_must_match",
+        "supports_player_filter": true
       }
     }
   },
   "request_schema": {
-    "required": ["query_id"],
-    "optional": ["limit", "season", "team_id", "month", "day", "start_season", "end_season", "player_id", "venue", "opponent_team_id", "metric", "secondary_metric", "direction", "min_pa", "min_ip_outs", "min_starts", "top_n"],
+    "required": [
+      "query_id"
+    ],
+    "optional": [
+      "limit",
+      "season",
+      "team_id",
+      "month",
+      "day",
+      "start_season",
+      "end_season",
+      "player_id",
+      "venue",
+      "opponent_team_id",
+      "metric",
+      "secondary_metric",
+      "direction",
+      "min_pa",
+      "min_ip_outs",
+      "min_starts",
+      "top_n"
+    ],
     "limit_minimum": 1,
     "limit_maximum": 100,
     "season_minimum": 1898,
     "season_maximum": 2025,
     "approved_teams": {
-      "ATL": ["Atlanta Braves", "Braves", "Atlanta", "Brave"]
+      "ATL": [
+        "Atlanta Braves",
+        "Braves",
+        "Atlanta",
+        "Brave"
+      ]
+    }
+  },
+  "metric_definitions": {
+    "home_runs": {
+      "pattern": "\\b(?:home[- ]?runs?|homers?|hrs?|dingers?)\\b",
+      "source_column": "b_hr",
+      "kind": "count"
+    },
+    "wins": {
+      "pattern": "\\b(?:w(?:'?s)?|wins?|winning|winningest|winners?|victor(?:y|ies)|games?\\s+won|won\\s+the\\s+most\\s+games)\\b"
+    },
+    "losses": {
+      "pattern": "\\b(?:losses|games?\\s+lost|lost\\s+(?:the\\s+)?(?:most|fewest)\\s+games)\\b"
+    },
+    "saves": {
+      "pattern": "\\bsaves?\\b"
+    },
+    "ops": {
+      "pattern": "\\bops\\b",
+      "kind": "rate"
+    },
+    "fip": {
+      "pattern": "\\bfip\\b"
+    },
+    "strikeouts": {
+      "pattern": "\\b(?:k(?:'?s)?|so|strike[- ]?outs?|punch[- ]?outs?)\\b",
+      "source_column": "b_k",
+      "kind": "count"
+    },
+    "hits": {
+      "pattern": "\\b(?:hits|hit\\s+total)\\b",
+      "source_column": "b_h",
+      "kind": "count"
+    },
+    "avg": {
+      "pattern": "\\b(?:averages?|avg|batting averages?)\\b",
+      "kind": "rate"
+    },
+    "obp": {
+      "pattern": "\\b(?:obp|on[- ]base percentage)\\b",
+      "kind": "rate"
+    },
+    "slg": {
+      "pattern": "\\b(?:slg|slugging(?: percentage)?)\\b",
+      "kind": "rate"
+    },
+    "era": {
+      "pattern": "\\bera\\b"
+    },
+    "stolen_bases": {
+      "pattern": "\\b(?:stolen\\s+bases?|steals?|sb)\\b|\\bbases?\\b[^?]{0,60}\\bsteal\\b",
+      "source_column": "b_sb",
+      "kind": "count"
+    },
+    "runs_batted_in": {
+      "pattern": "\\b(?:runs? batted in|rbi(?:['\u2019]?s)?)\\b",
+      "source_column": "b_rbi",
+      "kind": "count"
+    },
+    "walks": {
+      "pattern": "\\b(?:walks?|bases on balls|bbs?)\\b",
+      "source_column": "b_w",
+      "kind": "count"
+    },
+    "singles": {
+      "pattern": "\\b(?:singles?|one[- ]base hits?|1b)\\b(?![- ]seasons?\\b)",
+      "kind": "count"
+    },
+    "doubles": {
+      "pattern": "\\b(?:doubles?|two[- ]base hits?|2b)\\b(?![- ]plays?\\b)",
+      "source_column": "b_d",
+      "kind": "count"
+    },
+    "triples": {
+      "pattern": "\\b(?:triples?|three[- ]base hits?|3b)\\b(?![- ]plays?\\b)",
+      "source_column": "b_t",
+      "kind": "count"
+    },
+    "plate_appearances": {
+      "pattern": "\\b(?:plate appearances?|pas?)\\b",
+      "source_column": "b_pa",
+      "kind": "count"
+    },
+    "at_bats": {
+      "pattern": "\\b(?:at[- ]?bats?|abs?)\\b",
+      "source_column": "b_ab",
+      "kind": "count"
+    },
+    "runs": {
+      "pattern": "(?<!home )(?<!home-)\\bruns\\b(?!\\s+batted)",
+      "source_column": "b_r",
+      "kind": "count"
+    },
+    "intentional_walks": {
+      "pattern": "\\b(?:intentional walks?|intentional bases on balls|ibbs?)\\b"
+    }
+  },
+  "presentation_profiles": {
+    "batting": {
+      "label": "Batting",
+      "fields": [
+        "plate_appearances",
+        "at_bats",
+        "runs",
+        "hits",
+        "singles",
+        "doubles",
+        "triples",
+        "home_runs",
+        "runs_batted_in",
+        "walks",
+        "strikeouts",
+        "stolen_bases",
+        "avg",
+        "obp",
+        "slg",
+        "ops"
+      ],
+      "summary_fields": [
+        "hits",
+        "home_runs",
+        "runs_batted_in",
+        "avg",
+        "obp",
+        "slg",
+        "ops"
+      ]
+    },
+    "pitching": {
+      "label": "Pitching",
+      "fields": [
+        "innings_pitched",
+        "games_started",
+        "wins",
+        "losses",
+        "saves",
+        "strikeouts",
+        "era",
+        "fip"
+      ],
+      "summary_fields": [
+        "innings_pitched",
+        "wins",
+        "losses",
+        "strikeouts",
+        "era"
+      ]
     }
   }
 }

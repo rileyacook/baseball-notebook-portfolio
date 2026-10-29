@@ -1,0 +1,56 @@
+{
+  "passed": true,
+  "verified_at": "2026-10-12T13:07:36.030138+00:00",
+  "fingerprint": "c66415410d0ad1e7c00208ba1da86bfc52a919046678191222af7572831d3494",
+  "model": "qwen/qwen3.8-27b",
+  "database_sha256": "8fdba1b5b20635eace63449f1d2bafa358f5ceb4b9c1ab819ce6516657ca7b96",
+  "exact_question": "how many games did the braves hit 3 or more home runs in 2023?",
+  "exact_question_query_id": "team_game_batting_condition_count",
+  "exact_question_result": {
+    "matching_games": 44,
+    "source_team_games": 162,
+    "condition_component_coverage_percent": 100.0
+  },
+  "exact_question_actual_model_calls": [],
+  "follow_up_question": "Change the season to 2024.",
+  "follow_up_route": "bounded_model_edit",
+  "follow_up_request": {
+    "query_id": "team_game_batting_condition_count",
+    "limit": 1,
+    "season": 2024,
+    "team_id": "ATL",
+    "month": null,
+    "day": null,
+    "start_season": null,
+    "end_season": null,
+    "player_id": null,
+    "venue": null,
+    "opponent_team_id": null,
+    "metric": null,
+    "secondary_metric": null,
+    "direction": null,
+    "min_pa": null,
+    "min_ip_outs": null,
+    "min_starts": null,
+    "top_n": null,
+    "conditions": [
+      {
+        "metric": "home_runs",
+        "operator": ">=",
+        "value": 3.0
+      }
+    ]
+  },
+  "follow_up_result": {
+    "matching_games": 30,
+    "source_team_games": 162,
+    "condition_component_coverage_percent": 100.0
+  },
+  "actual_model_calls": [
+    {
+      "stage": "hosted season edit",
+      "kind": "edit"
+    }
+  ],
+  "notes": "The exact original phrasing uses the application production path; if it needs no model, that is explicitly recorded. The subsequent season edit requires a real Groq edit call and preserves team and inclusive conditions. This is additional proof, not inherited baseline approval or deployed browser proof."
+}

@@ -1,0 +1,55 @@
+{
+  "history_preserved": true,
+  "runs": [
+    {
+      "name": "v2",
+      "matched_cases_before_stop": 14,
+      "HTTP_attempts": 19,
+      "failure": "Q015 returned one mandatory comparison row rather than both; actual completeness failure"
+    },
+    {
+      "name": "v3",
+      "matched_cases": 124,
+      "case_HTTP_attempts": 71,
+      "fresh_Judge_followup_calls": 1,
+      "failure": "Fresh Braves initial checker expectedJSONlist but receivedtuple; season edit not attempted"
+    },
+    {
+      "name": "original_v4",
+      "matched_cases_before_stop": 70,
+      "HTTP_attempts": 66,
+      "failure": "Q071 transport timeout without returned answer; original ledger preserved"
+    },
+    {
+      "name": "owner_approved_identical_source_recovery",
+      "retained_case_records_rechecked": 70,
+      "new_case_records": 54,
+      "new_case_HTTP_attempts": 7,
+      "fresh_followup_HTTP_attempts": 2,
+      "new_timeout_events": 0
+    },
+    {
+      "name": "first_new_deployment",
+      "failure": "Image built but normal startup could not import verification module; strict gate failed closed"
+    },
+    {
+      "name": "packaging_repair",
+      "change": "Container module search path only; app fingerprint unchanged",
+      "offline_checks": 3,
+      "actual_deployment": "live_verified"
+    },
+    {
+      "name": "additional_cloud_boundary_probe",
+      "failure": "Inconclusive25secondclientreadtimeout; no retry or passing claims"
+    }
+  ],
+  "raw_provider_bodies_private_feedback_and_account_details_included": false,
+  "oct29_operational_failures_preserved": {
+    "direct_account_connection": "failed_initial_operation;publichostname_resolution_blocker_observed",
+    "first_isolated_comparison": "failedAssertionError;preserved",
+    "new_local_UTC_restore": "31tablesexactmatch_passed_without_relaxed_comparison",
+    "optional_boundary": "400malformedpath_rejection_differedfromstrict404expectation;failedrecordpreserved",
+    "stale_temporary_chat_retry": "404afternewinstance;knownunfixedUXissue",
+    "provider_quota": "actual429observed;exactbucket/resetunknown;sharedFreecapacity"
+  }
+}

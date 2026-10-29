@@ -1,6 +1,7 @@
 """Validate and execute structured analytics requests safely."""
 
 import json
+import math
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
@@ -139,6 +140,9 @@ def parse_request(
     maximum = request_schema["limit_maximum"]
     if not minimum <= limit <= maximum:
         raise ValueError(f"limit must be between {minimum} and {maximum}.")
+
+    # Complete grouped results must not be truncated by a model-supplied cap.
+    limit = max(limit, query_definition.get("minimum_result_limit", minimum))
 
     season_minimum = request_schema["season_minimum"]
     season_maximum = request_schema["season_maximum"]
@@ -303,7 +307,9 @@ def parse_request(
             raise ValueError("Condition operator is not approved.")
         if isinstance(value, bool) or not isinstance(value, (int, float)):
             raise ValueError("Condition value must be numeric.")
-        if metric_name in {"plate_appearances", "hits", "home_runs", "stolen_bases"} and float(value) % 1:
+        if not math.isfinite(value) or value < 0:
+            raise ValueError("Condition values must be finite and non-negative.")
+        if metric_name in {"plate_appearances", "hits", "home_runs", "stolen_bases", "runs_batted_in"} and float(value) % 1:
             raise ValueError("Counting-stat condition values must be whole numbers.")
         conditions.append(MetricCondition(metric_name, operator, float(value)))
     if "conditions" in query_definition.get("required_request_fields", []) and not conditions:
@@ -396,4 +402,8 @@ def execute_request(
     finally:
         connection.close()
 
-    return result.head(request.limit)
+    # The fixed rank cutoff already bounds ranked queries. A row cap here
+    # would discard equal-rank ties, including a tied first place.
+    if query_definition.get("semantics", {}).get("tie_policy"):
+        return result
+    return result.head(max(request.limit, query_definition.get("minimum_result_limit", 1)))

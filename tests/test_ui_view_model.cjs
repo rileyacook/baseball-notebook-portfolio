@@ -68,3 +68,20 @@ test('saved generic follow-up prompts explain failed interpretation rather than 
   assert.match(form.message,/could not connect this follow-up/);
   assert.doesNotMatch(form.message,/specify the player, statistic, or scope/);
 });
+test('operational notices distinguish personal and shared limits without inventing resets', () => {
+  const vm = require('../web/view_model.js');
+  assert.match(vm.operationalNotice({error_code:'per_user_allowance',error:'Limit'}).title,/Your testing/);
+  assert.match(vm.operationalNotice({error_code:'shared_model_limit',error:'Limit'}).title,/Shared AI/);
+  assert.equal(vm.operationalNotice({error_code:'provider_rate_limit'}).retryAfter,null);
+  assert.equal(vm.operationalNotice({retry_after_seconds:3605}).retryAfter,3605);
+  assert.equal(vm.operationalNotice({retry_after_seconds:'60'}).retryAfter,null);
+  assert.equal(vm.operationalNotice({retryable:false}).retryable,false);
+});
+test('only an opaque support ID is presented', () => {
+  assert.equal(vm.operationalNotice({request_id:'a'.repeat(32)}).requestId,'a'.repeat(32));
+  assert.equal(vm.operationalNotice({request_id:'secret-user-email'}).requestId,null);
+});
+
+test('saved provider waits expire rather than restart when a conversation reopens', () => {
+  assert.equal(vm.operationalNotice({retry_after_seconds:120,retry_at:'2000-01-01T00:00:00+00:00'}).retryAfter,0);
+});
